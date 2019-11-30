@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Lista categorii";
+}
+
+<h1> @ViewBag.message </h1>
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var category in ViewBag.Categories)
+{
+    <div class="panel panel-default">
+        @Html.Partial("CategoryInfo", (Forum.Models.Category)category)
+        <a class="btn btn-success" href="/Category/Show/@category.CategoryId">Afisare categorie</a>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+}
+<br />
+<a class="btn btn-info" href="/Category/New">Adauga o noua categorie</a>
+<br />
+
