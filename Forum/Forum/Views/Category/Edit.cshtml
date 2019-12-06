@@ -5,7 +5,6 @@
 
 <h2>@ViewBag.Title</h2>
 
-@*<form method="post" action="/Category/Edit/@Model.CategoryId">*@
 @using (Html.BeginForm(actionName: "Edit", controllerName: "Category", method: FormMethod.Post, routeValues: new
 {
     id = Model.CategoryId
@@ -16,11 +15,10 @@
     @Html.ValidationSummary(false, "Erori de validare", new { @class = "text-danger" })
 
     @Html.HiddenFor(m => m.CategoryId)
+    
 
-    @*<label>Nume categorie</label>*@
     @Html.LabelFor(m => m.CategoryName)
     <br />
-    @*<input type="text" name="CategoryName" value="@ViewBag.Category.CategoryName" />*@
     @Html.EditorFor(m => m.CategoryName)
     <br />
     @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
@@ -28,6 +26,5 @@
 
     <br />
     <button class="btn btn-success" type="submit">Modifica categoria</button>
-@*</form>*@
 }
 

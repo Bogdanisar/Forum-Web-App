@@ -26,6 +26,7 @@ namespace Forum.Models
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
 
         public static ApplicationDbContext Create()
         {

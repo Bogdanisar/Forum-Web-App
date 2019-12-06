@@ -1,0 +1,36 @@
+﻿@model Forum.Models.Subject
+@{
+    ViewBag.Title = "Afisare subiect";
+}
+
+<h1> @ViewBag.message </h1>
+<h2> @ViewBag.Title </h2>
+
+<div class="panel panel-default">
+    @Html.Partial("SubjectInfo", Model)
+    <a class="btn btn-success" href="/Subject/Edit/@Model.SubjectId">Editare subiect</a>
+
+    <div style="display: inline-block">
+        @using (Html.BeginForm(actionName: "Delete", controllerName: "Subject", routeValues: new
+        {
+            id = Model.SubjectId
+            //@style = "display: inline-block"
+        }))
+        {
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+
+            <button class="btn btn-success" type="submit">Sterge subiectul</button>
+        }
+    </div>
+</div>
+
+
+
+<br /> <br /> <br /> <br /> <br /> <br />
+<a class="btn btn-info" href="/Subject/Index">All subjects</a>
+<br /> <br />
+
+<br />
+<hr />
+<br />
+

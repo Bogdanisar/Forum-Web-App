@@ -5,7 +5,6 @@ using System.Web.Mvc;
 
 namespace Forum.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class CategoryController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -25,24 +24,13 @@ namespace Forum.Controllers
             return View();
         }
 
-        public ActionResult Show(int id)
-        {
-            Category category = db.Categories.Find(id);
-
-            if (category == null)
-            {
-                return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid category id" });
-                //return RedirectToAction("Error", "Error");
-            }
-
-            return View(category);
-        }
-
+        [Authorize(Roles = "Administrator")]
         public ActionResult New()
         {
             return View();
         }
-
+        
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult New(Category cat)
         {
@@ -64,14 +52,36 @@ namespace Forum.Controllers
             return View(cat);
         }
 
+        public ActionResult Show(int id)
+        {
+            Category category = db.Categories.Find(id);
+
+            if (category == null)
+            {
+                return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid category id" });
+                //return RedirectToAction("Error", "Error");
+            }
+
+            return View(category);
+        }
+
+        public ActionResult CreateSubject(int id)
+        {
+            Category cat = db.Categories.Find(id);
+            return RedirectToAction("New", "Subject", new { categoryId = cat.CategoryId, categoryName = cat.CategoryName });   
+        }
+
+
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
             return View(category);
         }
 
-        
 
+
+        [Authorize(Roles = "Administrator")]
         [HttpPut]
         public ActionResult Edit(int id, Category requestCategory)
         {
@@ -95,6 +105,7 @@ namespace Forum.Controllers
             return View(requestCategory);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpDelete]
         public ActionResult Delete(int id)
         {

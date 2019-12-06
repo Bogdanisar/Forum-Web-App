@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Lista subiecte";
+}
+
+<h1> @ViewBag.message </h1>
+<h2> @ViewBag.Title </h2>
+
+@foreach (var subject in ViewBag.Subjects)
+{
+    <div class="panel panel-default">
+        @Html.Partial("SubjectInfo", (Forum.Models.Subject)subject)
+        <p> Category: @subject.Category.CategoryName </p>
+        <a class="btn btn-success" href="/Subject/Show/@subject.SubjectId">Afisare subiect</a>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+}
+<br />
+<a class="btn btn-info" href="/Category/Index">All categories</a>
+<br />
+

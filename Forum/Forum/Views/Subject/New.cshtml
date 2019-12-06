@@ -1,0 +1,34 @@
+﻿@model Forum.Models.Subject
+
+@{
+    ViewBag.Title = "Adaugare subiect la categoria " + ViewBag.CategoryName;
+}
+
+<h1> @ViewBag.message </h1>
+<h2>@ViewBag.Title</h2>
+
+@*<form method="post" action="/Category/New">*@
+@using (Html.BeginForm(actionName: "New", controllerName: "Subject"))
+{
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.CategoryId)
+
+    @Html.LabelFor(m => m.Title)
+    <br />
+    @Html.EditorFor(m => m.Title)
+    <br />
+    @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+    <br /><br />
+
+    @Html.LabelFor(m => m.Description)
+    <br />
+    @Html.EditorFor(m => m.Description)
+    <br />
+    @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
+    <br /><br />
+
+    <br /><br />
+    <button class="btn btn-success" type="submit">Adauga Subiect</button>
+    @*</form>*@
+}
+
