@@ -26,5 +26,8 @@ namespace Forum.Models
         //[Required(ErrorMessage = "The subject must be created by a user")]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
+
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
