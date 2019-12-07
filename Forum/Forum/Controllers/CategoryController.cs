@@ -39,6 +39,7 @@ namespace Forum.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    cat.Date = DateTime.Now;
                     db.Categories.Add(cat);
                     db.SaveChanges();
                     TempData["message"] = "Categoria a fost adaugata!";
