@@ -1,5 +1,6 @@
 ﻿using Forum.Models;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -62,6 +63,7 @@ namespace Forum.Controllers
                 //return RedirectToAction("Error", "Error");
             }
 
+            ViewBag.Subjects = category.Subjects.ToList<Subject>();
             return View(category);
         }
 

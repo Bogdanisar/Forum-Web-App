@@ -25,12 +25,26 @@
     </div>
 </div>
 
+<a class="btn btn-info" href="/Category/CreateSubject/@Model.CategoryId">Add a new subject in this category</a>
+
+<br /><br />
+
+
+      <div>
+
+          @foreach (Forum.Models.Subject subject in ViewBag.Subjects)
+          {
+              <div style="border: 2px solid black; margin: 20px 0px;" onclick="window.location = '/Subject/Show/@subject.SubjectId'">
+              @*<div style="border: 2px solid black" onclick="console.log(2)">*@
+                  @Html.Partial("SubjectInfo", subject)
+              </div>
+          }
+
+      </div>
 
 
 <br /> <br /> <br /> <br /> <br /> <br />
-<a class="btn btn-info" href="/Category/CreateSubject/@Model.CategoryId">Add a new subject in this category</a>
-<br /> <br />
-<a class="btn btn-info" href="/Category/Index">All categories</a>   
+<a class="btn btn-info" href="/Category/Index">All categories</a>
 
 <br />
 <hr />

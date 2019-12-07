@@ -68,6 +68,11 @@ namespace Forum.Controllers
 
         public ActionResult Show(int id)
         {
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             Subject subject = db.Subjects.Find(id);
 
             if (subject == null)
