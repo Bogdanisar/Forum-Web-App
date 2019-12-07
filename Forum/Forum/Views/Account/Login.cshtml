@@ -39,6 +39,9 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Log in" class="btn btn-default" />
+                        <input type="submit" value="Log in as Admin" class="btn btn-default" onclick="fill(0)" />
+                        <input type="submit" value="Log in as Mod" class="btn btn-default" onclick="fill(1)" />
+                        <input type="submit" value="Log in as User" class="btn btn-default" onclick="fill(2)" />
                     </div>
                 </div>
                 <p>
@@ -57,6 +60,22 @@
         </section>
     </div>
 </div>
+
+<script type="text/javascript">
+    var id;
+    function fill(id) {
+        if (id == 0) {
+            document.getElementById("Email").value = "admin@admin.com";
+            document.getElementById("Password").value = "Administrator1!";
+        } else if (id == 1) {
+            document.getElementById("Email").value = "mod@mod.com";
+            document.getElementById("Password").value = "Moderator1!";
+        } else {
+            document.getElementById("Email").value = "user@user.com";
+            document.getElementById("Password").value = "User1!";
+        }
+    };
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
