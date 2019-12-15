@@ -256,6 +256,7 @@
     <Content Include="Views\Subject\Show.cshtml" />
     <Content Include="Views\Subject\Edit.cshtml" />
     <Content Include="Views\Shared\CategoryInfo.cshtml" />
+    <Content Include="Views\Subject\Search.cshtml" />
     <Content Include="Views\Comment\Index.cshtml" />
     <Content Include="Views\Shared\CommentInfo.cshtml" />
     <Content Include="Views\Comment\New.cshtml" />

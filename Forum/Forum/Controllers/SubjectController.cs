@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Web.Services;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Forum.Controllers
 {
@@ -13,6 +16,21 @@ namespace Forum.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         
+        [Authorize(Roles = "User,Moderator,Administrator")]
+        public ActionResult Search(string word)
+        {
+            Debug.WriteLine(word);
+
+            var subjectList = from subject in db.Subjects
+                              where subject.Description.Contains(word) || subject.Title.Contains(word)
+                              select subject;
+
+            ViewBag.Subjects = subjectList.ToList<Subject>();
+            ViewBag.Word = word;
+
+            return View();
+        }
+
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
