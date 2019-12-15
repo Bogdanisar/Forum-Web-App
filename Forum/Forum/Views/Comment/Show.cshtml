@@ -10,6 +10,11 @@
     @Html.Partial("CommentInfo", Model)
     <p> Subject: @Model.Subject.Title </p>
     <p> Category: @Model.Subject.Category.CategoryName </p>
+    
+    <p id="p_vote_count">Vote count: </p>
+    <input id="vote_btn" class="btn btn-success" type="button" onclick='Vote()' value="Vote">
+    <input id="clear_btn" class="btn btn-success" type="button" onclick='Clear()' value="Clear">
+
     <a class="btn btn-success" href="/Comment/Edit/@Model.CommentId">Edit comment</a>
 
     <div style="display: inline-block">
@@ -34,3 +39,11 @@
 <hr />
 <br />
 
+
+
+
+
+
+
+
+@Html.Partial("CommentUpvoteScript", Model)

@@ -175,6 +175,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
+    <Compile Include="Controllers\UpvoteCommentController.cs" />
     <Compile Include="Controllers\UpvoteSubjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -262,9 +263,11 @@
     <Content Include="Views\Comment\New.cshtml" />
     <Content Include="Views\Comment\Show.cshtml" />
     <Content Include="Views\Comment\Edit.cshtml" />
+    <Content Include="Views\Shared\CommentUpvoteScript.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\UpvoteComment\" />
     <Folder Include="Views\UpvoteSubject\" />
   </ItemGroup>
   <ItemGroup>

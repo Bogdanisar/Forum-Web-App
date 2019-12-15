@@ -1,0 +1,69 @@
+﻿@{
+    Layout = null;
+    int isAuthenticatedJS = 0;
+
+    if (Request.IsAuthenticated)
+    {
+        isAuthenticatedJS = 1;
+    }
+}
+
+
+<script type="text/javascript">
+
+    function updateVotes(divId, result) {
+        console.log("Updating:");
+        console.log(divId);
+        console.log(result);
+
+        var tmp = JSON.parse(result);
+        var elem = document.getElementById(divId);
+        if (tmp.VoteText !== undefined) {
+            elem.querySelector(".vote_btn").value = tmp.VoteText;
+            elem.querySelector(".vote_btn").style.display = "inline-block";
+        }
+        elem.querySelector(".p_vote_count").innerHTML = tmp.VoteCount + " &#128077";
+    }
+
+    function InitComment(divId, CommentId) {
+        $.ajax({
+            type: 'GET',
+            url: '/UpvoteComment/Initialize',
+            data: { 'CommentId': CommentId },
+            success: function (result) {
+                updateVotes(divId, result);
+            }
+        });
+    }
+
+    window.addEventListener("load", function () {
+        for (elem of document.getElementsByClassName("commentDiv")) {
+            console.log("Found a commentDiv!");
+            console.log(elem.id);
+            console.log(elem.getAttribute("CommentId"));
+            InitComment(elem.id, elem.getAttribute("CommentId"));
+        }
+    });
+
+    function VoteComment(divId, CommentId) {
+        $.ajax({
+            type: 'GET',
+            url: '/UpvoteComment/Vote',
+            data: { 'CommentId': JSON.stringify(CommentId) },
+            success: function (result) { updateVotes(divId, result); },
+            error: function (result) {
+                alert("Error " + result)
+            }
+        });
+    }
+
+    function ClearComment(divId, CommentId) {
+        $.ajax({
+            type: 'GET',
+            url: '/UpvoteComment/Clear',
+            data: { 'CommentId': JSON.stringify(CommentId) },
+            success: function (result) { updateVotes(divId, result); }
+        });
+    }
+
+</script>

@@ -6,25 +6,21 @@
 <h1> @ViewBag.message </h1>
 <h2> @ViewBag.Title </h2>
 
-<body onload="Initialize()" />
+<body onload="Initialize()"> </body>
 
 <div class="panel panel-default">
     @Html.Partial("SubjectInfo", Model)
 
-    @*<form action="Vote" target="UpvoteSubject">
-            <button class="btn btn-success" type="submit">Vote</button>
-        </form>*@
-
     <p id="p_vote_count">Vote count: </p>
     <input id="vote_btn" class="btn btn-success" type="button" onclick='Vote()' value="Vote">
-    <input id="clear_btn" class="btn btn-success" type="button" onload="alert('123')" onclick='Clear()' value="Clear">
+    <input id="clear_btn" class="btn btn-success" type="button" onclick='Clear()' value="Clear">
+
     <a class="btn btn-success" href="/Subject/Edit/@Model.SubjectId">Editare subiect</a>
 
     <div style="display: inline-block">
         @using (Html.BeginForm(actionName: "Delete", controllerName: "Subject", routeValues: new
         {
             id = Model.SubjectId
-            //@style = "display: inline-block"
         }))
         {
             @Html.HttpMethodOverride(HttpVerbs.Delete)
@@ -41,24 +37,40 @@
 
 <div>
 
-    @foreach (Forum.Models.Comment comment in ViewBag.Comments)
+    @for (int i = 0; i < ViewBag.Comments.Count; ++i)
     {
-    <div style="border: 2px solid black; margin: 20px 0px;">
+        Forum.Models.Comment comment = ViewBag.Comments[i];
+        string divId = $"comment{i}";
+
+        <text>
+    <div id="@divId" class="commentDiv" CommentId="@comment.CommentId" style="border: 2px solid black; margin: 20px 0px;">
         @Html.Partial("CommentInfo", comment)
+
+        <p class="p_vote_count" style="display: inline-block;"></p>
+        <div>
+            @if (Request.IsAuthenticated) {
+                <input class="btn btn-success vote_btn" type="button" onclick="VoteComment('@divId', @comment.CommentId)" value="Vote" style="display: none;">
+            }
+            @if (Request.IsAuthenticated && User.IsInRole("Administrator")) {
+                <input class="btn btn-success clear_btn" type="button" onclick="ClearComment('@divId', @comment.CommentId)" value="Clear" style="display: inline-block;">
+            }
+        </div>
 
         @if (ViewBag.UserId == comment.UserId)
         {
             <a class="btn btn-success" href="/Comment/Edit/@comment.CommentId">Edit</a>
         }
 
-        @if (ViewBag.UserId == comment.UserId || ViewBag.UserCanDelete) { 
-            <form method="post" action="/Comment/Delete/@comment.CommentId">
+        @if (ViewBag.UserId == comment.UserId || ViewBag.UserCanDelete)
+        {
+            <form method="post" action="/Comment/Delete/@comment.CommentId" style="display: inline-block;">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
 
                 <button class="btn btn-danger" type="submit">Delete</button>
             </form>
         }
     </div>
+        </text>
     }
 
 </div>
@@ -68,6 +80,21 @@
 <br />
 <hr />
 <br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script type="text/javascript">
     function Vote() {
@@ -109,3 +136,9 @@
         });
     }
 </script>
+
+
+
+
+
+@Html.Partial("CommentUpvoteScript", Model)
