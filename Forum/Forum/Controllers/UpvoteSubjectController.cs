@@ -1,4 +1,5 @@
 ﻿using Forum.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,8 +13,30 @@ namespace Forum.Controllers
     public class UpvoteSubjectController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        private string GetVoteButtonStatus(string userId, int subjectId)
+        {
+            var rows = from upvote in db.Upvote
+                       where upvote.UserId == userId
+                       where upvote.SubjectId == subjectId
+                       select upvote;
+
+            if (rows.Count() == 0)
+            {
+                return "Vote";
+            }
+            return "Unvote";
+        }
+
+        private string GetVoteCount(int subjectId)
+        {
+            var rows = from upvote in db.Upvote
+                       where upvote.SubjectId == subjectId
+                       select upvote;
+
+            return rows.Count().ToString();
+        }
         
-        [Authorize(Roles = "Administrator,User,Moderator")]
         private string ChangeVote(int subjectId)
         {
             string userId = User.Identity.Name;
@@ -31,7 +54,7 @@ namespace Forum.Controllers
                     db.Upvote.Remove(up);
                 }
                 db.SaveChanges();
-                return "Vote removed :(";
+                return "Vote";
             }
             else
             {
@@ -40,8 +63,7 @@ namespace Forum.Controllers
                 us.SubjectId = subjectId;
                 db.Upvote.Add(us);
                 db.SaveChanges();
-                Debug.WriteLine("Succes");
-                return "Vote added :)";
+                return "Unvote";
             }
         }
 
@@ -63,7 +85,14 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator,User,Moderator")]
         public string Vote(string subjectId)
         {
-            return ChangeVote(Convert.ToInt32(subjectId));
+            int subId = Convert.ToInt32(subjectId);
+            var map = new Dictionary<string, string>();
+
+            map.Add("VoteText", ChangeVote(subId));
+            map.Add("VoteCount", GetVoteCount(subId));
+
+            Debug.WriteLine(JsonConvert.SerializeObject(map));
+            return JsonConvert.SerializeObject(map);
         }
 
         [WebMethod]
@@ -73,19 +102,13 @@ namespace Forum.Controllers
             string userId = User.Identity.Name;
             int subId = Convert.ToInt32(subjectId);
 
-            var rows = from upvote in db.Upvote
-                       where upvote.UserId == userId
-                       where upvote.SubjectId == subId
-                       select upvote;
+            var map = new Dictionary<string, string>();
 
-            if (rows.Count() == 0)
-            {
-                return "Vote";
-            }
-            else
-            {
-                return "Unvote";
-            }
+            map.Add("VoteText", GetVoteButtonStatus(userId, subId));
+            map.Add("VoteCount", GetVoteCount(subId));
+            
+            Debug.WriteLine(JsonConvert.SerializeObject(map));
+            return JsonConvert.SerializeObject(map);
         }
     }
 }
