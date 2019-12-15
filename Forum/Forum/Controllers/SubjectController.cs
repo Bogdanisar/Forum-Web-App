@@ -84,6 +84,9 @@ namespace Forum.Controllers
         }
 
 
+
+
+
         public ActionResult Show(int id)
         {
             if (TempData.ContainsKey("message"))
@@ -98,9 +101,27 @@ namespace Forum.Controllers
                 return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid subject id" });
                 //return RedirectToAction("Error", "Error");
             }
-
+            
+            ViewBag.Comments = subject.Comments.ToList<Comment>();
+            ViewBag.UserCanDelete = false;
+            if (Request.IsAuthenticated) {
+                ViewBag.UserId = User.Identity.GetUserId();
+                if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                {
+                    ViewBag.UserCanDelete = true;
+                }
+            }
             return View(subject);
         }
+
+
+        public ActionResult CreateComment(int id)
+        {
+            Subject subject = db.Subjects.Find(id);
+            return RedirectToAction("New", "Comment", new { subjectId = subject.SubjectId, subjectTitle = subject.Title });
+        }
+
+
 
         [NonAction]
         public IEnumerable<SelectListItem> GetAllCategories()

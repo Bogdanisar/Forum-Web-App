@@ -1,0 +1,27 @@
+﻿@model Forum.Models.Comment
+
+@{
+    ViewBag.Title = "Adding comment to the subject " + ViewBag.SubjectTitle;
+}
+
+<h1> @ViewBag.message </h1>
+<h2>@ViewBag.Title</h2>
+
+@*<form method="post" action="/Category/New">*@
+@using (Html.BeginForm(actionName: "New", controllerName: "Comment"))
+{
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.SubjectId)
+
+    @Html.LabelFor(m => m.Content)
+    <br />
+    @Html.EditorFor(m => m.Content)
+    <br />
+    @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
+    <br /><br />
+
+    <br /><br />
+    <button class="btn btn-success" type="submit">Add comment</button>
+    @*</form>*@
+}
+
