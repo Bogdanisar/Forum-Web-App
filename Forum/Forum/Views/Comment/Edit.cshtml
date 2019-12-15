@@ -1,0 +1,29 @@
+﻿@model Forum.Models.Comment
+@{
+    ViewBag.Title = "Editare subiect";
+}
+
+
+<h1> @ViewBag.message </h1>
+<h2> @ViewBag.Title </h2>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Comment", method: FormMethod.Post, routeValues: new
+{
+    id = Model.CommentId
+}))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.ValidationSummary(false, "Erori de validare", new { @class = "text-danger" })
+
+
+    @Html.LabelFor(m => m.Content)
+    <br />
+    @Html.EditorFor(m => m.Content)
+    <br />
+    @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
+
+    <br />
+    <button class="btn btn-success" type="submit">Modifica subiectul</button>
+}
+

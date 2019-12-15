@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Lista comentarii admin";
+}
+
+<h1> @ViewBag.message </h1>
+<h2> @ViewBag.Title </h2>
+
+@foreach (Forum.Models.Comment comment in ViewBag.Comments)
+{
+<div class="panel panel-default">
+    @Html.Partial("CommentInfo", comment)
+    <p> Subject: @comment.Subject.Title </p>
+    <p> Category: @comment.Subject.Category.CategoryName </p>
+
+    <a class="btn btn-success" href="/Comment/Edit/@comment.CommentId">Edit</a>
+    @using (Html.BeginForm(actionName: "Delete", controllerName: "Comment", routeValues: new
+    {
+        id = comment.CommentId
+    }))
+    {
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+
+        <button class="btn btn-danger" type="submit">Delete</button>
+    }
+</div>
+
+<br />
+<hr />
+<br />
+}
+<br />
+<a class="btn btn-info" href="/Category/Index">All categories</a>
+<br />
+
