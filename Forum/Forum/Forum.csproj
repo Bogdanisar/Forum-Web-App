@@ -254,6 +254,7 @@
     <Content Include="Views\Subject\Show.cshtml" />
     <Content Include="Views\Subject\Edit.cshtml" />
     <Content Include="Views\Shared\CategoryInfo.cshtml" />
+    <Content Include="Views\Subject\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
