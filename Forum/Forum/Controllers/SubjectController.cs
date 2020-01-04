@@ -208,11 +208,25 @@ namespace Forum.Controllers
                 );
             }
 
+            // remove the subject upvotes
+            var upvotesToDelete = db.SubjectUpvotes.Where(u => u.SubjectId == id).ToList();
+            foreach (var u in upvotesToDelete)
+            {
+                db.SubjectUpvotes.Remove(u);
+            }
+
+            // remove the comments of this subject
+            var commentController = DependencyResolver.Current.GetService<CommentController>(); // get a valid commentController to call its DeleteComment method
+            commentController.ControllerContext = new ControllerContext(this.Request.RequestContext, commentController);
+            foreach (var c in subject.Comments.ToList()) {
+                commentController.DeleteComment(db, c.CommentId);
+            }
+
             db.Subjects.Remove(subject);
             db.SaveChanges();
 
             TempData["message"] = "The subject was removed";
-            return RedirectToAction("Index", "Category", null);
+            return RedirectToAction("Show", "Category", new { id = subject.CategoryId });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Forum.Models;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Forum.Controllers
 
         private string GetVoteButtonStatus(string userId, int subjectId)
         {
-            var rows = from upvote in db.Upvote
+            var rows = from upvote in db.SubjectUpvotes
                        where upvote.UserId == userId
                        where upvote.SubjectId == subjectId
                        select upvote;
@@ -30,7 +31,7 @@ namespace Forum.Controllers
 
         private string GetVoteCount(int subjectId)
         {
-            var rows = from upvote in db.Upvote
+            var rows = from upvote in db.SubjectUpvotes
                        where upvote.SubjectId == subjectId
                        select upvote;
 
@@ -39,9 +40,9 @@ namespace Forum.Controllers
         
         private string ChangeVote(int subjectId)
         {
-            string userId = User.Identity.Name;
+            string userId = User.Identity.GetUserId();
 
-            var rows = from upvote in db.Upvote
+            var rows = from upvote in db.SubjectUpvotes
                        where upvote.UserId == userId
                        where upvote.SubjectId == subjectId
                        select upvote;
@@ -51,7 +52,7 @@ namespace Forum.Controllers
             {
                 foreach (var up in rows)
                 {
-                    db.Upvote.Remove(up);
+                    db.SubjectUpvotes.Remove(up);
                 }
                 db.SaveChanges();
                 return "Vote";
@@ -61,7 +62,7 @@ namespace Forum.Controllers
                 UpvoteSubject us = new UpvoteSubject();
                 us.UserId = userId;
                 us.SubjectId = subjectId;
-                db.Upvote.Add(us);
+                db.SubjectUpvotes.Add(us);
                 db.SaveChanges();
                 return "Unvote";
             }
@@ -71,10 +72,10 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator,User,Moderator")]
         public string Clear()
         {
-            var rows = from upvote in db.Upvote select upvote;
+            var rows = from upvote in db.SubjectUpvotes select upvote;
             foreach (var up in rows)
             {
-                db.Upvote.Remove(up);
+                db.SubjectUpvotes.Remove(up);
             }
             db.SaveChanges();
 

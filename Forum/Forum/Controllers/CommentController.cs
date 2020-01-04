@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -136,6 +137,25 @@ namespace Forum.Controllers
             return View(requestComment);
         }
 
+        [NonAction]
+        public bool DeleteComment(ApplicationDbContext db, int id)
+        {
+            try
+            {
+                Comment comment = db.Comments.Find(id);
+
+                comment.UpvotingUsers.Clear(); // delete all the upvotes from the db;
+                db.Comments.Remove(comment);
+            }
+            catch (Exception e)
+            {
+                Debug.Write(e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
         [Authorize(Roles = "User,Moderator,Administrator")]
         [HttpDelete]
         public ActionResult Delete(int id)
@@ -150,11 +170,20 @@ namespace Forum.Controllers
                 );
             }
 
-            db.Comments.Remove(comment);
-            db.SaveChanges();
-
-            TempData["message"] = "The comment was removed";
-            return RedirectToAction("Show", "Subject", new { id = comment.SubjectId });
+            if (this.DeleteComment(db, id))
+            {
+                db.SaveChanges();
+                TempData["message"] = "The comment was removed";
+                return RedirectToAction("Show", "Subject", new { id = comment.SubjectId });
+            }
+            else
+            {
+                return RedirectToAction(
+                    "ErrorWithMessage",
+                    "Error",
+                    new { message = "Couldn't delete the comment!" }
+                );
+            }
         }
     }
 }

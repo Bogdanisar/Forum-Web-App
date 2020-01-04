@@ -118,16 +118,18 @@ namespace Forum.Controllers
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var user = UserManager.Users.FirstOrDefault(u => u.Id == id);
 
-            //var articles = db.Articles.Where(a => a.UserId == id);
-            //foreach (var article in articles)
-            //{
-            //    db.Articles.Remove(article);
-
-            //}
-            //// Commit pe articles
-            //db.SaveChanges();
+            // remove the comments of this user
+            var commentsToRemove = db.Comments.Where(c => c.UserId == id).ToList();
+            var commentController = DependencyResolver.Current.GetService<CommentController>(); // get a valid commentController to call its DeleteComment method
+            commentController.ControllerContext = new ControllerContext(this.Request.RequestContext, commentController);
+            foreach (var comment in commentsToRemove)
+            {
+                commentController.DeleteComment(db, comment.CommentId);
+            }
+            db.SaveChanges();
 
             UserManager.Delete(user);
+
             return RedirectToAction("Index");
         }
 

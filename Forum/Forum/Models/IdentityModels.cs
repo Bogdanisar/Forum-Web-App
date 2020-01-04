@@ -27,7 +27,7 @@ namespace Forum.Models
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<UpvoteSubject> Upvote { get; set; }
+        public DbSet<UpvoteSubject> SubjectUpvotes { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
         public static ApplicationDbContext Create()
@@ -49,6 +49,5 @@ namespace Forum.Models
                             uc.ToTable("UpvoteComment");
                         });
         }
-
     }
 }
