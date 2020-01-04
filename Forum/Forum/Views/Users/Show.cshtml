@@ -1,0 +1,41 @@
+﻿@model Forum.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "User details";
+}
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
+
+<div class="panel-heading">Username: @Model.UserName</div>
+
+<div class="panel-body">
+
+    <i class="glyphicon glyphicon-envelope"></i> User email: <span class="label label-default">@Model.Email</span>
+    <br/>
+    <i class="glyphicon glyphicon-th-list"></i> User role: @ViewBag.roleName
+    
+    <br /><br />
+
+    @if (@Model.PhoneNumber != null)
+    {
+        <i class="glyphicon glyphicon-phone"></i>@:User phone number:<span class="label label-default">@Model.PhoneNumber</span>
+
+
+    }
+
+</div>
+
+@if (Model.Id != ViewBag.utilizatorCurent)
+{
+    <div class="panel-footer">
+        @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", routeValues: new { id = @Model.Id }))
+        {
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <br />
+            <button class="btn btn-success" type="submit">Delete user</button>
+
+        }
+    </div>
+}

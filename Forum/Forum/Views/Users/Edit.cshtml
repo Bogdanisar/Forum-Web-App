@@ -1,0 +1,63 @@
+﻿@model Forum.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "User edit";
+}
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Users", routeValues: new { id = @Model.Id }))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.HiddenFor(m => m.Id)
+
+    <br />
+
+    <i class="glyphicon glyphicon-user"></i>
+    @Html.Label("UserName", "Username", new { @class = "" })
+
+    <br />
+
+    @Html.EditorFor(m => m.UserName)
+
+    <br /><br />
+
+    <i class="glyphicon glyphicon-envelope"></i>
+    @Html.Label("Email", "User email", new { @class = "" })
+
+    <br />
+
+    @Html.EditorFor(m => m.Email)
+
+    <br /><br />
+
+    <i class="glyphicon glyphicon-phone"></i>
+    @Html.Label("PhoneNumber", "User phone number")
+
+    <br />
+
+    @Html.EditorFor(m => m.PhoneNumber)
+
+    if (Model.Id != ViewBag.currentUserId)
+    {
+        <br /><br />
+
+        <i class="glyphicon glyphicon-th-list"></i>
+        <label>Select a role</label>
+        @Html.DropDownList("newRole", new SelectList(ViewBag.AllRoles, "Value", "Text", ViewBag.userRoleId), null, new { @class = "form-control" })
+    }
+    else
+    {
+        @Html.Hidden("newRole", (String)ViewBag.userRoleId)
+    }
+
+    <br /> <br />
+
+    <button class="btn btn-sm btn-success" type="submit">Change the user data</button>
+
+
+}
+
