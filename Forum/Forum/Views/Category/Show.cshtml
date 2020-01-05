@@ -1,13 +1,13 @@
 ﻿@model Forum.Models.Category
 @{
-    ViewBag.Title = "Afisare categorie";
+    ViewBag.Title = "Show Category";
 }
 
 <h2> @ViewBag.Title </h2>
 
 <div class="panel panel-default">
     @Html.Partial("CategoryInfo", Model)
-    <a class="btn btn-success" href="/Category/Edit/@Model.CategoryId">Editare categorie</a>
+    <a class="btn btn-success" href="/Category/Edit/@Model.CategoryId">Edit Category</a>
 
     @*<form style="display:inline-block" method="post" action="/Category/Delete/@Model.CategoryId">*@
     <div style="display: inline-block">
@@ -19,7 +19,7 @@
         {
             @Html.HttpMethodOverride(HttpVerbs.Delete)
 
-            <button class="btn btn-success" type="submit">Sterge categoria</button>
+            <button class="btn btn-success" type="submit">Delete Category</button>
         }
         @*</form>*@
     </div>
@@ -27,11 +27,19 @@
 
 <a class="btn btn-info" href="/Category/CreateSubject/@Model.CategoryId">Add a new subject in this category</a>
 
+@*Form for selecting a sorting criteria*@
+<form method="get" action="/Category/Show/@Model.CategoryId" style="float: right">
+    <input type="hidden" name="page" value="@ViewBag.currentPage" />
+    @Html.DropDownList((string)ViewBag.criteriaGetParam, new SelectList(ViewBag.criteriaList, "Value", "Text", ViewBag.criteriaValue), null, null)
+    @Html.DropDownList((string)ViewBag.orderGetParam, new SelectList(ViewBag.orderList, "Value", "Text", ViewBag.orderValue), null, null)
+    <button type="Submit"> Sort </button>
+</form>
+
 <br /><br />
 
 <div>
 
-    @foreach (Forum.Models.Subject subject in ViewBag.Subjects)
+    @foreach (Forum.Models.Subject subject in ViewBag.subjects)
     {
         <div style="border: 2px solid black; margin: 20px 0px;" onclick="window.location = '/Subject/Show/@subject.SubjectId'">
         @*<div style="border: 2px solid black" onclick="console.log(2)">*@
@@ -40,6 +48,31 @@
     }
 
 </div>
+
+
+@if (ViewBag.totalItems > 0)
+{
+    <div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a href="/Category/Show/@Model.CategoryId?page=1&@ViewBag.criteriaGetParam=@ViewBag.criteriaValue&@ViewBag.orderGetParam=@ViewBag.orderValue" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 1; i <= ViewBag.lastPage; i++)
+                {
+                    <li><a href="/Category/Show/@Model.CategoryId?page=@i&@ViewBag.criteriaGetParam=@ViewBag.criteriaValue&@ViewBag.orderGetParam=@ViewBag.orderValue">@(i)</a></li>
+                }
+                <li>
+                    <a href="/Category/Show/@Model.CategoryId?page=@ViewBag.lastPage&@ViewBag.criteriaGetParam=@ViewBag.criteriaValue&@ViewBag.orderGetParam=@ViewBag.orderValue" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
 
 
 <br /> <br /> <br /> <br /> <br /> <br />

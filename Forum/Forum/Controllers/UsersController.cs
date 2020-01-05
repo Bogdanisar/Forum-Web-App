@@ -162,7 +162,10 @@ namespace Forum.Controllers
 
 
 
-        public static string EmailDeleted = "Deleted";
+        public static string EmailDeleted
+        {
+            get { return "Deleted"; }
+        }
         public static ApplicationUser GetDeletedUser()
         {
             ApplicationUser deletedUser = (new ApplicationDbContext()).Users.Where(u => u.Email == EmailDeleted).FirstOrDefault();
