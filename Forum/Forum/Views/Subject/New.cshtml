@@ -1,7 +1,7 @@
 ﻿@model Forum.Models.Subject
 
 @{
-    ViewBag.Title = "Adaugare subiect la categoria " + ViewBag.CategoryName;
+    ViewBag.Title = "Adding subject to category: " + ViewBag.CategoryName;
 }
 
 <h1> @ViewBag.message </h1>
@@ -10,6 +10,9 @@
 @*<form method="post" action="/Category/New">*@
 @using (Html.BeginForm(actionName: "New", controllerName: "Subject"))
 {
+    @Html.Hidden("categoryName", (string)ViewBag.CategoryName)
+
+
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.CategoryId)
 

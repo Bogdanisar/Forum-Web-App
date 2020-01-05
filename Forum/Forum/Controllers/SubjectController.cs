@@ -60,7 +60,7 @@ namespace Forum.Controllers
 
         [Authorize(Roles = "User,Moderator,Administrator")]
         [HttpPost]
-        public ActionResult New(Subject subject)
+        public ActionResult New(Subject subject, string categoryName)
         {
             try
             {
@@ -76,10 +76,11 @@ namespace Forum.Controllers
             }
             catch (Exception e)
             {
-
+                Debug.WriteLine(e.Message);
             }
 
-            TempData["message"] = "Adding the subject failed. Please try again";
+            ViewBag.message = "Adding the subject failed. Please try again";
+            ViewBag.CategoryName = categoryName;
             return View(subject);
         }
 

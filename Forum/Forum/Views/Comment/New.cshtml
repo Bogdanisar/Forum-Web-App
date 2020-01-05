@@ -1,7 +1,7 @@
 ﻿@model Forum.Models.Comment
 
 @{
-    ViewBag.Title = "Adding comment to the subject " + ViewBag.SubjectTitle;
+    ViewBag.Title = "Adding comment to subject: " + ViewBag.SubjectTitle;
 }
 
 <h1> @ViewBag.message </h1>
@@ -10,6 +10,9 @@
 @*<form method="post" action="/Category/New">*@
 @using (Html.BeginForm(actionName: "New", controllerName: "Comment"))
 {
+    @Html.Hidden("subjectTitle", (string)ViewBag.SubjectTitle)
+
+
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.SubjectId)
 

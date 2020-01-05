@@ -44,7 +44,7 @@ namespace Forum.Controllers
 
         [Authorize(Roles = "User,Moderator,Administrator")]
         [HttpPost]
-        public ActionResult New(Comment comment)
+        public ActionResult New(Comment comment, string subjectTitle)
         {
             try
             {
@@ -59,9 +59,11 @@ namespace Forum.Controllers
             }
             catch (Exception e)
             {
-
+                Debug.WriteLine(e.Message);
             }
-            
+
+            ViewBag.message = "Adding the subject failed. Please try again";
+            ViewBag.SubjectTitle = subjectTitle;
             return View(comment);
         }
 
