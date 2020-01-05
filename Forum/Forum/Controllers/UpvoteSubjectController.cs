@@ -1,4 +1,5 @@
-﻿using Forum.Models;
+﻿using Forum.App_Start;
+using Forum.Models;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +12,7 @@ using System.Web.Services;
 
 namespace Forum.Controllers
 {
+    [MessageFilter]
     public class UpvoteSubjectController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

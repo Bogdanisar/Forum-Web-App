@@ -7,6 +7,8 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    @Styles.Render("~/Content/Toast.css")
+    @Scripts.Render("~/Content/Toast.js")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,6 +35,12 @@
         </div>
     </div>
     <div class="container body-content">
+
+        @if (ViewBag.message != null)
+        {
+            <script>displayToast(`@ViewBag.message`);</script>
+        }
+
         @RenderBody()
         <hr />
         <footer>

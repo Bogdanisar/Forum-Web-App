@@ -1,4 +1,5 @@
-﻿using Forum.Models;
+﻿using Forum.App_Start;
+using Forum.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Forum.Controllers
 {
+    [MessageFilter]
     public class CategoryController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -29,6 +31,11 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult New()
         {
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             return View();
         }
         
@@ -85,6 +92,11 @@ namespace Forum.Controllers
 
         public ActionResult Show(int id)
         {
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             string criteria = Request.Params.Get(CriteriaParamName);
             if (criteria == null) { criteria = CriteriaDate; }
             string order = Request.Params.Get(OrderParamName);
@@ -211,6 +223,11 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             Category category = db.Categories.Find(id);
             return View(category);
         }

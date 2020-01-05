@@ -1,4 +1,5 @@
-﻿using Forum.Models;
+﻿using Forum.App_Start;
+using Forum.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Forum.Controllers
 {
+    [MessageFilter]
     public class CommentController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -29,6 +31,11 @@ namespace Forum.Controllers
         [Authorize(Roles = "User,Moderator,Administrator")]
         public ActionResult New(int subjectId, string subjectTitle)
         {
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             Comment c = new Comment();
             c.SubjectId = subjectId;
             ViewBag.SubjectTitle = subjectTitle;

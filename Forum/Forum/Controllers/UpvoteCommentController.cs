@@ -8,9 +8,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Services;
 using Microsoft.AspNet.Identity;
+using Forum.App_Start;
 
 namespace Forum.Controllers
 {
+    [MessageFilter]
     public class UpvoteCommentController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

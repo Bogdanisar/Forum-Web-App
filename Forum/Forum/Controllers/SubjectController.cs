@@ -9,9 +9,11 @@ using System.Data.Entity;
 using System.Web.Services;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using Forum.App_Start;
 
 namespace Forum.Controllers
 {
+    [MessageFilter]
     public class SubjectController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -90,10 +92,10 @@ namespace Forum.Controllers
 
         public ActionResult Show(int id)
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
+            //if (TempData.ContainsKey("message"))
+            //{
+            //    ViewBag.message = TempData["message"].ToString();
+            //}
 
             Subject subject = db.Subjects.Find(id);
 

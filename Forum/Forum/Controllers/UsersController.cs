@@ -1,4 +1,5 @@
-﻿using Forum.Models;
+﻿using Forum.App_Start;
+using Forum.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -10,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Forum.Controllers
 {
+    [MessageFilter]
     [Authorize(Roles = "Administrator")]
     public class UsersController : Controller
     {
