@@ -36,11 +36,6 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-            
             ViewBag.Subjects = db.Subjects.ToList<Subject>();
             return View();
         }
@@ -51,11 +46,6 @@ namespace Forum.Controllers
             Subject s = new Subject();
             s.CategoryId = categoryId;
             ViewBag.CategoryName = categoryName;
-
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
 
             return View(s);
         }
@@ -92,11 +82,6 @@ namespace Forum.Controllers
 
         public ActionResult Show(int id)
         {
-            //if (TempData.ContainsKey("message"))
-            //{
-            //    ViewBag.message = TempData["message"].ToString();
-            //}
-
             Subject subject = db.Subjects.Find(id);
 
             if (subject == null)
@@ -165,8 +150,8 @@ namespace Forum.Controllers
         [HttpPut]
         public ActionResult Edit(int id, Subject requestSubject)
         {
-            Subject subject = db.Subjects.Find(id);
-            if ((User.IsInRole("User") || User.IsInRole("Moderator")) && subject.UserId != User.Identity.GetUserId())
+            Subject subj = db.Subjects.Find(id);
+            if ((User.IsInRole("User") || User.IsInRole("Moderator")) && subj.UserId != User.Identity.GetUserId())
             {
                 return RedirectToAction(
                     "ErrorWithMessage", 
@@ -179,21 +164,27 @@ namespace Forum.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (TryUpdateModel(subject))
+                    Subject subject = db.Subjects.Find(id);
+                    if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
                     {
-                        subject.Title = requestSubject.Title;
-                        subject.Description = requestSubject.Description;
-                        subject.CategoryId = requestSubject.CategoryId;
-                        TempData["message"] = "Subiectul a fost modificat!";
-                        db.SaveChanges();
+                        if (TryUpdateModel(subject))
+                        {
+                            subject.Title = requestSubject.Title;
+                            subject.Description = requestSubject.Description;
+                            subject.CategoryId = requestSubject.CategoryId;
+                            TempData["message"] = "Subiectul a fost modificat!";
+                            db.SaveChanges();
+
+                            return RedirectToAction("Show", new { id = subject.SubjectId });
+                        }
                     }
 
-                    return RedirectToAction("Show", new { id = subject.SubjectId });
                 }
             }
             catch (Exception e) { }
-            
-            TempData["message"] = "Editing the subject failed. Please try again";
+
+            ViewBag.CategoryList = GetAllCategories();
+            ViewBag.message = "Editing the subject failed. Please try again";
             return View(requestSubject);
         }
 

@@ -18,11 +18,6 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
             ViewBag.Comments = db.Comments.ToList<Comment>();
             return View();
         }
@@ -31,19 +26,9 @@ namespace Forum.Controllers
         [Authorize(Roles = "User,Moderator,Administrator")]
         public ActionResult New(int subjectId, string subjectTitle)
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
             Comment c = new Comment();
             c.SubjectId = subjectId;
             ViewBag.SubjectTitle = subjectTitle;
-
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
 
             return View(c);
         }
@@ -69,7 +54,7 @@ namespace Forum.Controllers
                 Debug.WriteLine(e.Message);
             }
 
-            ViewBag.message = "Adding the subject failed. Please try again";
+            ViewBag.message = "Adding the comment failed. Please try again";
             ViewBag.SubjectTitle = subjectTitle;
             return View(comment);
         }
@@ -77,11 +62,6 @@ namespace Forum.Controllers
 
         public ActionResult Show(int id)
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
             Comment comment = db.Comments.Find(id);
 
             if (comment == null)
@@ -135,14 +115,14 @@ namespace Forum.Controllers
 
                         TempData["message"] = "The comment was modified!";
                         db.SaveChanges();
+                        return RedirectToAction("Show", "Subject", new { id = comment.SubjectId });
                     }
 
-                    return RedirectToAction("Show", "Subject", new { id = comment.SubjectId });
                 }
             }
             catch (Exception e) { }
 
-            TempData["message"] = "Editing the comment failed. Please try again";
+            ViewBag.message = "Editing the comment failed. Please try again";
             return View(requestComment);
         }
 

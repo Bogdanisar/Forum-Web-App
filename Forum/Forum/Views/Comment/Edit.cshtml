@@ -1,6 +1,6 @@
 ﻿@model Forum.Models.Comment
 @{
-    ViewBag.Title = "Editare subiect";
+    ViewBag.Title = "Edit comment";
 }
 
 
@@ -23,6 +23,6 @@
     @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
 
     <br />
-    <button class="btn btn-success" type="submit">Modifica subiectul</button>
+    <button class="btn btn-success" type="submit">Modify comment</button>
 }
 

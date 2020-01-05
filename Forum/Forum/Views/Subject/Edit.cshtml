@@ -13,6 +13,9 @@
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
+    @Html.HiddenFor(m => m.SubjectId)
+
+
     @Html.ValidationSummary(false, "Erori de validare", new { @class = "text-danger" })
 
 
@@ -22,6 +25,7 @@
     <br />
     @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
 
+    <br /><br />
 
     @Html.LabelFor(m => m.Description)
     <br />
@@ -34,9 +38,9 @@
     @Html.Label("Category")
     <br />
     @Html.DropDownListFor(
-        m => m.CategoryId, 
-        new SelectList(ViewBag.CategoryList, "Value", "Text"), 
-        "Select the category", 
+        m => m.CategoryId,
+        new SelectList(ViewBag.CategoryList, "Value", "Text"),
+        "Select the category",
         new { @class = "form-control" }
     )
 

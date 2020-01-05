@@ -15,11 +15,6 @@ namespace Forum.Controllers
 
         public ActionResult Index()
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
             ViewBag.Categories =
                 from category in db.Categories
                 orderby category.CategoryName
@@ -31,11 +26,6 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult New()
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
             return View();
         }
         
@@ -92,11 +82,6 @@ namespace Forum.Controllers
 
         public ActionResult Show(int id)
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
             string criteria = Request.Params.Get(CriteriaParamName);
             if (criteria == null) { criteria = CriteriaDate; }
             string order = Request.Params.Get(OrderParamName);
@@ -223,11 +208,6 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
             Category category = db.Categories.Find(id);
             return View(category);
         }
