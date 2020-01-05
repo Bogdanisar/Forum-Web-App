@@ -112,12 +112,34 @@ namespace Forum.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            Category category = db.Categories.Find(id);
-            db.Categories.Remove(category);
-            db.SaveChanges();
+            try
+            {
+                Category category = db.Categories.Find(id);
 
-            TempData["message"] = "Categoria a fost stearsa!";
-            return RedirectToAction("Index");
+                // remove the subjects of this category
+                var subjectController = DependencyResolver.Current.GetService<SubjectController>(); // get a valid controller
+                subjectController.ControllerContext = new ControllerContext(this.Request.RequestContext, subjectController);
+                foreach (var subject in category.Subjects.ToList())
+                {
+                    subjectController.DeleteSubject(db, subject.SubjectId);
+                }
+
+                db.Categories.Remove(category);
+                db.SaveChanges();
+
+                TempData["message"] = "Categoria a fost stearsa!";
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+
+                return RedirectToAction(
+                    "ErrorWithMessage",
+                    "Error",
+                    new { message = "Failed to remove the category!" }
+                );
+            }
         }
 
     }

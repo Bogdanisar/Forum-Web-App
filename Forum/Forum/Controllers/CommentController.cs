@@ -149,7 +149,7 @@ namespace Forum.Controllers
             }
             catch (Exception e)
             {
-                Debug.Write(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
 

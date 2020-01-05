@@ -65,15 +65,15 @@ namespace Forum.Controllers
                     return false;
                 }
 
-                Debug.Write("Found user");
-                Debug.Write(db.Users.Find(userId));
+                Debug.WriteLine("Found user");
+                Debug.WriteLine(db.Users.Find(userId));
                 db.Comments.Find(commId).UpvotingUsers.Add(db.Users.Find(userId));
                 db.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Debug.Write($"Exception thrown in ChanveVote()!: ${e}");
+                Debug.WriteLine($"Exception thrown in ChanveVote()!: ${e}");
                 return false;
             }
         }
@@ -103,7 +103,7 @@ namespace Forum.Controllers
             }
             catch (Exception e)
             {
-                Debug.Write($"Exception thrown in UpvoteCommentController.Initialize()!: ${e}");
+                Debug.WriteLine($"Exception thrown in UpvoteCommentController.Initialize()!: ${e}");
 
                 var map = new Dictionary<string, string>();
                 map.Add("VoteCount", "0");
@@ -154,7 +154,7 @@ namespace Forum.Controllers
             }
             catch (Exception e)
             {
-                Debug.Write($"Exception thrown in UpvoteCommentController.Clear()!: ${e}");
+                Debug.WriteLine($"Exception thrown in UpvoteCommentController.Clear()!: ${e}");
 
                 var map = new Dictionary<string, string>();
                 map.Add("VoteText", "Vote");
