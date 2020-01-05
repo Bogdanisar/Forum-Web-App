@@ -181,7 +181,7 @@ namespace Forum.Controllers
                 return RedirectToAction(
                     "ErrorWithMessage",
                     "Error",
-                    new { message = "Couldn't delete the comment!" }
+                    new { message = "Failed to delete comment!" }
                 );
             }
         }

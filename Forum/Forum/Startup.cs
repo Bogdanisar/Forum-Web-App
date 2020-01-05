@@ -1,4 +1,5 @@
-﻿using Forum.Models;
+﻿using Forum.Controllers;
+using Forum.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
@@ -13,7 +14,7 @@ namespace Forum
         {
             ConfigureAuth(app);
 
-            // Se apeleaza o metoda in care se adauga contul de administrator si rolurile aplicatiei
+            // Se apeleaza o metoda in care se adauga conturile si rolurile aplicatiei
             createAdminUserAndApplicationRoles();
         }
 
@@ -34,7 +35,8 @@ namespace Forum
             {
                 new UserInfo("User", "user@user.com", "User1!"),
                 new UserInfo("Moderator", "mod@mod.com", "Moderator1!"),
-                new UserInfo("Administrator", "admin@admin.com", "Administrator1!")
+                new UserInfo("Administrator", "admin@admin.com", "Administrator1!"),
+                new UserInfo("Deleted", UsersController.EmailDeleted, "Deleted1!")
             };
 
             ApplicationDbContext context = new ApplicationDbContext();
@@ -59,8 +61,8 @@ namespace Forum
                     user.UserName = info[i].email;
                     user.Email = info[i].email;
 
-                    var adminCreated = UserManager.Create(user, info[i].parola);
-                    if (adminCreated.Succeeded)
+                    var userCreated = UserManager.Create(user, info[i].parola);
+                    if (userCreated.Succeeded)
                     {
                         UserManager.AddToRole(user.Id, info[i].role);
                     }

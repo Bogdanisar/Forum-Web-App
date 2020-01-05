@@ -23,7 +23,11 @@ namespace Forum.Controllers
             //            select user;
             //ViewBag.UsersList = users;
 
-            ViewBag.UsersList = db.Users.ToList();
+            var list = db.Users.ToList();
+            var deletedUser = list.Find(u => u.Id == UsersController.GetDeletedUser().Id);
+            list.Remove(deletedUser);
+
+            ViewBag.UsersList = list;
             return View();
         }
 
@@ -50,6 +54,7 @@ namespace Forum.Controllers
         {
             ApplicationUser user = db.Users.Find(id);
             ViewBag.utilizatorCurent = User.Identity.GetUserId();
+            ViewBag.DeletedUserId = UsersController.GetDeletedUser().Id;
 
             var roles = db.Roles.ToList();
             var roleName = roles.Where(j => j.Id ==
@@ -117,21 +122,51 @@ namespace Forum.Controllers
             ApplicationDbContext context = new ApplicationDbContext();
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var user = UserManager.Users.FirstOrDefault(u => u.Id == id);
+            var deletedUserId = UsersController.GetDeletedUser().Id;
+            
+            // remove the user, but keep their subjects: Change the subject's user from this one to the "deleted" user;
+            var subjectsToRemove = db.Subjects.Where(s => s.UserId == id).ToList();
+            foreach (var subject in subjectsToRemove)
+            {
+                subject.UserId = deletedUserId;
+            }
 
-            // remove the comments of this user
+            // the same as with subjects;
             var commentsToRemove = db.Comments.Where(c => c.UserId == id).ToList();
-            var commentController = DependencyResolver.Current.GetService<CommentController>(); // get a valid commentController to call its DeleteComment method
-            commentController.ControllerContext = new ControllerContext(this.Request.RequestContext, commentController);
             foreach (var comment in commentsToRemove)
             {
-                commentController.DeleteComment(db, comment.CommentId);
+                comment.UserId = deletedUserId;
             }
-            db.SaveChanges();
 
+            // remove the subject upvotes of this user;
+            var subjectUpvotesToRemove = db.SubjectUpvotes.Where(su => su.UserId == id).ToList();
+            foreach (var subjectUpvote in subjectUpvotesToRemove)
+            {
+                db.SubjectUpvotes.Remove(subjectUpvote);
+            }
+
+            // remove the comment upvotes of this user;
+            foreach (var comment in db.Comments.ToList())
+            {
+                comment.UpvotingUsers.Remove(user);
+            }
+
+            db.SaveChanges();
             UserManager.Delete(user);
 
             return RedirectToAction("Index");
         }
 
+
+
+
+
+
+        public static string EmailDeleted = "Deleted";
+        public static ApplicationUser GetDeletedUser()
+        {
+            ApplicationUser deletedUser = (new ApplicationDbContext()).Users.Where(u => u.Email == EmailDeleted).FirstOrDefault();
+            return deletedUser;
+        }
     }
 }

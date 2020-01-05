@@ -194,6 +194,41 @@ namespace Forum.Controllers
             return View(requestSubject);
         }
 
+
+
+        [NonAction]
+        public bool DeleteSubject(ApplicationDbContext db, int id)
+        {
+            try
+            {
+                Subject subject = db.Subjects.Find(id);
+
+                // remove the subject upvotes
+                var upvotesToDelete = db.SubjectUpvotes.Where(u => u.SubjectId == id).ToList();
+                foreach (var u in upvotesToDelete)
+                {
+                    db.SubjectUpvotes.Remove(u);
+                }
+
+                // remove the comments of this subject
+                var commentController = DependencyResolver.Current.GetService<CommentController>(); // get a valid commentController to call its DeleteComment method
+                commentController.ControllerContext = new ControllerContext(this.Request.RequestContext, commentController);
+                foreach (var c in subject.Comments.ToList())
+                {
+                    commentController.DeleteComment(db, c.CommentId);
+                }
+
+                db.Subjects.Remove(subject);
+            }
+            catch (Exception e)
+            {
+                Debug.Write(e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
         [Authorize(Roles = "User,Moderator,Administrator")]
         [HttpDelete]
         public ActionResult Delete(int id)
@@ -208,25 +243,21 @@ namespace Forum.Controllers
                 );
             }
 
-            // remove the subject upvotes
-            var upvotesToDelete = db.SubjectUpvotes.Where(u => u.SubjectId == id).ToList();
-            foreach (var u in upvotesToDelete)
+            if (this.DeleteSubject(this.db, id))
             {
-                db.SubjectUpvotes.Remove(u);
+                db.SaveChanges();
+                TempData["message"] = "The subject was removed";
+                return RedirectToAction("Show", "Category", new { id = subject.CategoryId });
+            }
+            else
+            {
+                return RedirectToAction(
+                    "ErrorWithMessage",
+                    "Error",
+                    new { message = "Failed to remove subject!" }
+                );
             }
 
-            // remove the comments of this subject
-            var commentController = DependencyResolver.Current.GetService<CommentController>(); // get a valid commentController to call its DeleteComment method
-            commentController.ControllerContext = new ControllerContext(this.Request.RequestContext, commentController);
-            foreach (var c in subject.Comments.ToList()) {
-                commentController.DeleteComment(db, c.CommentId);
-            }
-
-            db.Subjects.Remove(subject);
-            db.SaveChanges();
-
-            TempData["message"] = "The subject was removed";
-            return RedirectToAction("Show", "Category", new { id = subject.CategoryId });
         }
     }
 }
