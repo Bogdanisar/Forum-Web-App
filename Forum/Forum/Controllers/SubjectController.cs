@@ -91,13 +91,8 @@ namespace Forum.Controllers
             }
             
             ViewBag.Comments = subject.Comments.ToList<Comment>();
-            ViewBag.UserCanDelete = false;
             if (Request.IsAuthenticated) {
                 ViewBag.UserId = User.Identity.GetUserId();
-                if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                {
-                    ViewBag.UserCanDelete = true;
-                }
             }
             return View(subject);
         }
@@ -165,20 +160,16 @@ namespace Forum.Controllers
                 if (ModelState.IsValid)
                 {
                     Subject subject = db.Subjects.Find(id);
-                    if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+                    if (TryUpdateModel(subject))
                     {
-                        if (TryUpdateModel(subject))
-                        {
-                            subject.Title = requestSubject.Title;
-                            subject.Description = requestSubject.Description;
-                            subject.CategoryId = requestSubject.CategoryId;
-                            TempData["message"] = "Subiectul a fost modificat!";
-                            db.SaveChanges();
+                        subject.Title = requestSubject.Title;
+                        subject.Description = requestSubject.Description;
+                        subject.CategoryId = requestSubject.CategoryId;
+                        TempData["message"] = "Subiectul a fost modificat!";
+                        db.SaveChanges();
 
-                            return RedirectToAction("Show", new { id = subject.SubjectId });
-                        }
+                        return RedirectToAction("Show", new { id = subject.SubjectId });
                     }
-
                 }
             }
             catch (Exception e) { }
@@ -187,6 +178,45 @@ namespace Forum.Controllers
             ViewBag.message = "Editing the subject failed. Please try again";
             return View(requestSubject);
         }
+
+
+
+
+        [Authorize(Roles = "Moderator,Administrator")]
+        public ActionResult EditCategory(int id)
+        {
+            Subject subject = db.Subjects.Find(id);
+            ViewBag.CategoryList = GetAllCategories();
+            return View(subject);
+        }
+
+
+        [Authorize(Roles = "Moderator,Administrator")]
+        [HttpPut]
+        public ActionResult EditCategory(int id, Subject requestSubject)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Subject subject = db.Subjects.Find(id);
+                    if (TryUpdateModel(subject))
+                    {
+                        subject.CategoryId = requestSubject.CategoryId;
+                        TempData["message"] = "Changing the subject category succeeded!";
+                        db.SaveChanges();
+                        return RedirectToAction("Show", new { id = subject.SubjectId });
+                    }
+                }
+            }
+            catch (Exception e) { }
+
+            ViewBag.CategoryList = GetAllCategories();
+            ViewBag.message = "Editing the subject category failed. Please try again";
+            return View(requestSubject);
+        }
+
+
 
 
 

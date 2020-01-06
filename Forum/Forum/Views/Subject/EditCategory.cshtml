@@ -1,0 +1,39 @@
+﻿@model Forum.Models.Subject
+@{
+    ViewBag.Title = "Subject edit";
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(actionName: "EditCategory", controllerName: "Subject", method: FormMethod.Post, routeValues: new
+{
+    id = Model.SubjectId
+}))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.HiddenFor(m => m.SubjectId)
+    @Html.HiddenFor(m => m.Title)
+    @Html.HiddenFor(m => m.Description)
+
+    <br />
+    <p>Title: @Model.Title</p>
+    <br /><br />
+    <p>Description: @Model.Description</p>
+    <br /><br />
+    @Html.Label("Category")
+    <br />
+    @Html.DropDownListFor(
+        m => m.CategoryId,
+        new SelectList(ViewBag.CategoryList, "Value", "Text"),
+        "Select the category",
+        new { @class = "form-control" }
+    )
+
+    <br />
+
+    <br />
+    <button class="btn btn-success" type="submit">Save changes</button>
+}
+
