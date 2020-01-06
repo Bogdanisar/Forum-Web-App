@@ -109,7 +109,10 @@ namespace Forum.Controllers
 
                 var map = new Dictionary<string, string>();
                 map.Add("VoteCount", "0");
-                map.Add("VoteText", "Vote");
+                if (Request.IsAuthenticated)
+                {
+                    map.Add("VoteText", "Vote");
+                }
 
                 return JsonConvert.SerializeObject(map);
             }

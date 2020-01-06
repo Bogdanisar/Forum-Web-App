@@ -18,11 +18,13 @@
 
         var tmp = JSON.parse(result);
         var elem = document.getElementById(divId);
-        if (tmp.VoteText !== undefined) {
+        if (elem.querySelector(".vote_btn") != undefined && tmp.VoteText !== undefined) {
             elem.querySelector(".vote_btn").value = tmp.VoteText;
             elem.querySelector(".vote_btn").style.display = "inline-block";
         }
-        elem.querySelector(".p_vote_count").innerHTML = tmp.VoteCount + " &#128077";
+        if (elem.querySelector(".p_vote_count") != undefined && tmp.VoteCount !== undefined) {
+            elem.querySelector(".p_vote_count").innerHTML = tmp.VoteCount + " &#128077";
+        }
     }
 
     function InitComment(divId, CommentId) {
@@ -38,9 +40,6 @@
 
     window.addEventListener("load", function () {
         for (elem of document.getElementsByClassName("commentDiv")) {
-            console.log("Found a commentDiv!");
-            console.log(elem.id);
-            console.log(elem.getAttribute("CommentId"));
             InitComment(elem.id, elem.getAttribute("CommentId"));
         }
     });
