@@ -4,6 +4,5 @@
 }
 
 <p>Titlu: @Model.Title </p>
-<p>Content: @Model.Description </p>
+<p>Content: @Html.Raw(Model.Description) </p>
 <p>Username: @Model.User.UserName </p>
-<p>@*Category: @Model.Category.CategoryName*@ </p>

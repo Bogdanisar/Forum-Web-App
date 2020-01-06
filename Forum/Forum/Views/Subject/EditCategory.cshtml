@@ -18,9 +18,7 @@
     @Html.HiddenFor(m => m.Description)
 
     <br />
-    <p>Title: @Model.Title</p>
-    <br /><br />
-    <p>Description: @Model.Description</p>
+    @Html.Partial("SubjectInfo", Model)
     <br /><br />
     @Html.Label("Category")
     <br />

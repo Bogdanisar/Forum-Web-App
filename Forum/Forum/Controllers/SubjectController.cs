@@ -10,6 +10,7 @@ using System.Web.Services;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using Forum.App_Start;
+using Microsoft.Security.Application;
 
 namespace Forum.Controllers
 {
@@ -60,6 +61,7 @@ namespace Forum.Controllers
                 {
                     subject.UserId = User.Identity.GetUserId();
                     subject.Date = DateTime.Now;
+                    subject.Description = Sanitizer.GetSafeHtmlFragment(subject.Description);
                     db.Subjects.Add(subject);
                     db.SaveChanges();
                     TempData["message"] = "The subject was added!";
@@ -162,12 +164,14 @@ namespace Forum.Controllers
                     Subject subject = db.Subjects.Find(id);
                     if (TryUpdateModel(subject))
                     {
+                        requestSubject.Description = Sanitizer.GetSafeHtmlFragment(requestSubject.Description);
+
                         subject.Title = requestSubject.Title;
                         subject.Description = requestSubject.Description;
                         subject.CategoryId = requestSubject.CategoryId;
-                        TempData["message"] = "Subiectul a fost modificat!";
                         db.SaveChanges();
 
+                        TempData["message"] = "Subiectul a fost modificat!";
                         return RedirectToAction("Show", new { id = subject.SubjectId });
                     }
                 }

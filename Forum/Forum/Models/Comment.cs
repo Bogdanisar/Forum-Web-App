@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Forum.Models
 {
@@ -13,6 +14,7 @@ namespace Forum.Models
 
         [Required]
         [StringLength(10000, MinimumLength = 1)]
+        [AllowHtml]
         public string Content { get; set; }
 
         [Required]

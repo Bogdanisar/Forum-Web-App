@@ -1,6 +1,7 @@
 ﻿using Forum.App_Start;
 using Forum.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.Security.Application;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,6 +45,7 @@ namespace Forum.Controllers
                 {
                     comment.UserId = User.Identity.GetUserId();
                     comment.Date = DateTime.Now;
+                    comment.Content = Sanitizer.GetSafeHtmlFragment(comment.Content);
                     db.Comments.Add(comment);
                     db.SaveChanges();
                     return RedirectToAction("Show", "Subject", new { id = comment.SubjectId });
@@ -111,10 +113,12 @@ namespace Forum.Controllers
                 {
                     if (TryUpdateModel(comment))
                     {
+                        requestComment.Content = Sanitizer.GetSafeHtmlFragment(requestComment.Content);
+
                         comment.Content = requestComment.Content;
+                        db.SaveChanges();
 
                         TempData["message"] = "The comment was modified!";
-                        db.SaveChanges();
                         return RedirectToAction("Show", "Subject", new { id = comment.SubjectId });
                     }
 
