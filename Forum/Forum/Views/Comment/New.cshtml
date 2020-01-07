@@ -17,7 +17,7 @@
 
     @Html.LabelFor(m => m.Content)
     <br />
-    @Html.EditorFor(m => m.Content)
+    @Html.TextArea("Content", Model.Content, new { @class = "form-control summernote", @style = "display: none" })
     <br />
     @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
     <br /><br />
