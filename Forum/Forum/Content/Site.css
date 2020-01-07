@@ -1,4 +1,6 @@
-﻿body {
+﻿@import url('https://fonts.googleapis.com/css?family=Ma+Shan+Zheng|Oswald&display=swap');
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -30,4 +32,31 @@ textarea {
 
 .validation-summary-valid {
     display: none;
+}
+
+
+
+
+#custom .navbar {
+    background-color: #dadada;
+    border: none;
+    box-shadow: 0 6px 12px #dadada;
+    font-family: 'Oswald', serif;
+}
+
+#custom .navbar a {
+    color: #2c2c2c;
+}
+
+#custom .navbar a:hover {
+    color: #5cb85c;
+}
+
+#custom .navbar-brand {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+body {
 }

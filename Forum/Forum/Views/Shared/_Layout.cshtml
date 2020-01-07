@@ -11,8 +11,8 @@
     @Styles.Render("~/Content/Toast.css")
     @Scripts.Render("~/Content/Toast.js")
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+<body id="custom">
+    <div class="navbar navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -20,18 +20,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Treddi", "Index", "Category", new { area = "" }, new { @class = "navbar-brand"})
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Category")</li>
-
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <li>@Html.ActionLink("Show users", "Index", "Users")</li>
-                    }
-                </ul>
                 @Html.Partial("_LoginPartial")
+
+
+                @if (User.IsInRole("Administrator")) { 
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Menu<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/Category/Index">Category Index</a></li>
+                                <li><a href="/Subject/Index">Subject Index</a></li>
+                                <li><a href="/Comment/Index">Comment Index</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/Users/Index">Users</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
             </div>
         </div>
     </div>
