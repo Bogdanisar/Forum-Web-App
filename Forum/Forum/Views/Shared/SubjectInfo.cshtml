@@ -1,8 +1,27 @@
 ﻿
-@{
-    Layout = null;
-}
+<div class="panel-heading article-heading">
+    <span class="font-roboto article-title">@Model.Title</span>
+</div>
 
-<p>Titlu: @Model.Title </p>
-<p>Content: @Html.Raw(Model.Description) </p>
-<p>Username: @Model.User.UserName </p>
+<div class="panel-body">
+    <span class="article-content-title">Continut articol</span>
+    <br />
+    <div class="article-content-wrapper">
+        @Html.Raw(Model.Description)
+    </div>
+</div>
+<div class="article-meta">
+    <span class="">
+        <i class="glyphicon glyphicon-user"></i>
+        <strong> @Model.User.UserName </strong>
+    </span>
+    <div>
+        <i class="glyphicon glyphicon-bookmark"></i>
+        @Model.Category.CategoryName
+    </div>
+    <div>
+        <i class="glyphicon glyphicon-time"></i>
+        @Model.Date
+    </div>
+</div>
+

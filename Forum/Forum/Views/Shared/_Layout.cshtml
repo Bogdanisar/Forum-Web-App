@@ -66,9 +66,9 @@
     @Scripts.Render("~/Scripts/Summernote.js");
 
     <script>
-        $(".dropdown-category-delete").click(function (e) {
+        $(".dropdown-delete").click(function (e) {
             e.preventDefault();
-            $(this).closest(".category-wrapper").find('form').submit();
+            $(this).closest(".form-and-dropdown-wrapper").find('form').submit();
         });
     </script>
 </body>

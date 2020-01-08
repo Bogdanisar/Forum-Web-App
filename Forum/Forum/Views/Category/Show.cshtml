@@ -19,15 +19,17 @@
     <button type="Submit"> Sort </button>
 </form>
 
-<br /><br />
 
 <div>
 
     @foreach (Forum.Models.Subject subject in ViewBag.subjects)
     {
-        <div style="border: 2px solid black; margin: 20px 0px;" onclick="window.location = '/Subject/Show/@subject.SubjectId'">
+        <hr />
+        <div onclick="window.location = '/Subject/Show/@subject.SubjectId'">
         @*<div style="border: 2px solid black" onclick="console.log(2)">*@
-            @Html.Partial("SubjectInfo", subject)
+            <div class="panel panel-default">
+                @Html.Partial("SubjectInfo", subject)
+            </div>
         </div>
     }
 
