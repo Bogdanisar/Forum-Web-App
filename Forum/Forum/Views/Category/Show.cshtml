@@ -5,27 +5,11 @@
 
 <h2> @ViewBag.Title </h2>
 
-<div class="panel panel-default">
+<div style="padding-bottom: 20px;">
     @Html.Partial("CategoryInfo", Model)
-    <a class="btn btn-success" href="/Category/Edit/@Model.CategoryId">Edit Category</a>
-
-    @*<form style="display:inline-block" method="post" action="/Category/Delete/@Model.CategoryId">*@
-    <div style="display: inline-block">
-        @using (Html.BeginForm(actionName: "Delete", controllerName: "Category", routeValues: new
-        {
-            id = Model.CategoryId,
-            //@style = "display: inline-block"
-        }))
-        {
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-
-            <button class="btn btn-success" type="submit">Delete Category</button>
-        }
-        @*</form>*@
-    </div>
 </div>
 
-<a class="btn btn-info" href="/Category/CreateSubject/@Model.CategoryId">Add a new subject in this category</a>
+<a class="btn btn-primary" href="/Category/CreateSubject/@Model.CategoryId">Add a new subject in this category</a>
 
 @*Form for selecting a sorting criteria*@
 <form method="get" action="/Category/Show/@Model.CategoryId" style="float: right">
@@ -35,15 +19,17 @@
     <button type="Submit"> Sort </button>
 </form>
 
-<br /><br />
 
 <div>
 
     @foreach (Forum.Models.Subject subject in ViewBag.subjects)
     {
-        <div style="border: 2px solid black; margin: 20px 0px;" onclick="window.location = '/Subject/Show/@subject.SubjectId'">
-            @*<div style="border: 2px solid black" onclick="console.log(2)">*@
-            @Html.Partial("SubjectInfo", subject)
+        <hr />
+        <div onclick="window.location = '/Subject/Show/@subject.SubjectId'">
+        @*<div style="border: 2px solid black" onclick="console.log(2)">*@
+            <div class="panel panel-default">
+                @Html.Partial("SubjectInfo", subject)
+            </div>
         </div>
     }
 
@@ -73,11 +59,3 @@
         </nav>
     </div>
 }
-
-
-<br /> <br /> <br /> <br /> <br /> <br />
-<a class="btn btn-info" href="/Category/Index">All categories</a>
-
-<br />
-<hr />
-<br />

@@ -1,5 +1,51 @@
 ﻿
-<div class="panel-heading">
-    <p>@Model.CategoryName</p>
-    <p>@Model.Date</p>
+<div class="container-fluid form-and-dropdown-wrapper">
+    <div class="row">
+
+        <div style="display: flex; flex-flow: row; width: 100%;">
+
+            <div style="flex-basis: auto; flex-grow: 1">
+                <div class="list-group" style="margin: 0px;">
+                    <a href="/Category/Show/@Model.CategoryId" class="list-group-item">
+                        <h4 class="list-group-item-heading" style="float: left;"><b> @Model.CategoryName </b> <span class="badge"> @Model.Subjects.Count </span> </h4>
+                        <p style="text-align: right" class="list-group-item-text"> Created on: @Model.Date </p>
+                    </a>
+                </div>
+            </div>
+
+            @if (User.IsInRole("Administrator"))
+            {                
+                <div style="display: none">
+                    @using (Html.BeginForm(actionName: "Delete", controllerName: "Category", routeValues: new
+                    {
+                        id = Model.CategoryId
+                    }))
+                    {
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    }
+                </div>
+
+                <div style="flex-basis: auto; flex-grow: 0;">
+
+                    <div class="dropdown" style="height: 100%;">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="height: 100%;">
+                            Admin
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/Category/Edit/@Model.CategoryId">Edit</a></li>
+                            <li role="separator" class="divider"></li>
+
+                            @*This gets called through the jquery call in _Layout.cshtml*@
+                            <li><a class="dropdown-delete" href="#">Delete</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
 </div>
+
