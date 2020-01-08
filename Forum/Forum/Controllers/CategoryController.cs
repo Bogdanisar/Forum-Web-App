@@ -15,10 +15,11 @@ namespace Forum.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Categories =
-                from category in db.Categories
-                orderby category.CategoryName
-                select category;
+            //ViewBag.Categories =
+            //    from category in db.Categories
+            //    orderby category.CategoryName
+            //    select category;
+            ViewBag.Categories = db.Categories.Include("Subjects").OrderBy(c => c.CategoryName);
 
             return View();
         }
