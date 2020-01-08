@@ -11,6 +11,7 @@ namespace Forum.Models
         [Key]
         public string ProfileId { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         [DataType(DataType.Date)]

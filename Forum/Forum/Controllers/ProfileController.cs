@@ -26,6 +26,14 @@ namespace Forum.Controllers
             try
             {
                 ViewBag.Profile = db.Profiles.Find(id);
+                ViewBag.SubjectNumber = (from subject in db.Subjects
+                                        where subject.UserId == id
+                                        select subject).Count();
+                ViewBag.CommentNumber = (from comment in db.Comments
+                                         where comment.UserId == id
+                                         select comment).Count();
+
+                ViewBag.UserId = User.Identity.GetUserId();
             } catch (Exception e)
             {
                 Debug.WriteLine(e);

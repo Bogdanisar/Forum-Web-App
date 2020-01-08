@@ -10,5 +10,15 @@
     <li>
         Birthday: @ViewBag.Profile.Birthday.ToShortDateString()
     </li>
-    <a class="btn btn-success" href="/Profile/Edit/@ViewBag.Profile.ProfileId">Edit Profile</a>
+    <li>
+        Subjects: @ViewBag.SubjectNumber
+    </li>
+    <li>
+        Comments: @ViewBag.CommentNumber
+    </li>
+
+    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || ViewBag.UserId == ViewBag.Profile.ProfileId)
+    {
+        <a class="btn btn-success" href="/Profile/Edit/@ViewBag.Profile.ProfileId">Edit Profile</a>
+    }
 </div>
