@@ -15,7 +15,7 @@
             <div style="display: flex; justify-content: flex-end; align-items: flex-end; width: 100%;">
                 <form action="/Subject/Search" method="post">
                     @Html.Editor("word")
-                    <button class="btn btn-success" type="submit" style="margin-left: 20px;">Search</button>
+                    <button class="btn btn-primary" type="submit" style="margin-left: 20px;">Search</button>
                 </form>
             </div>
         </div>
@@ -28,54 +28,10 @@
     @Html.Partial("CategoryInfo", (Forum.Models.Category)category)
 }
 
-@*<div class="list-group">
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading" style="text-align: center"><b>Mancare <span class="badge">42</span></b></h4>
-            <div style="margin-left:30px; margin-right:30px; text-align: center">is a very long description of our most important category. You should read this. Will this look ok? I do not know</div>
-            <p style="text-align: right" class="list-group-item-text">Created on: 05-Jan-20 2:37:34 PM</p>
-        </a>
-    </div>*@
-
-@*<hr />
-
-    <div class="list-group">
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading" style="float: left;"><b>Mancare <span class="badge">42</span></b></h4>
-            <p style="text-align: right" class="list-group-item-text">Created on: 05-Jan-20 2:37:34 PM</p>
-        </a>
-    </div>
-
-    <hr />*@
-
-@*<div class="list-group">
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading" style="float: left;"><b>Jokes <span class="badge">69</span></b></h4>
-            <p style="text-align: right" class="list-group-item-text">Created on: 05-Jan-20 2:37:34 PM</p>
-        </a>
-    </div>
-
-    <hr />
-
-    <div class="list-group">
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading" style="float: left;"><b>DIY </b><span class="badge">10</span></h4>
-            <p style="text-align: right" class="list-group-item-text">Created on: 05-Jan-20 2:37:34 PM</p>
-        </a>
-    </div>
-    <div class="list-group">
-        <a href="#" class="list-group-item">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-7"><span style="font-size:18px;"><b>DIY <span class="badge">10</span></b></span> </div>
-                <div class="col-md-5" style="text-align: right">Created on: 05-Jan-20 2:37:34 PM</div>
-            </div>
-        </div>
-    </a>
-    </div>*@
 
 @if (User.IsInRole("Administrator"))
 {
     <br />
-    <a class="btn btn-info" href="/Category/New">Add a new category</a>
+    <a class="btn btn-warning" href="/Category/New">Add a new category</a>
     <br />
 }
