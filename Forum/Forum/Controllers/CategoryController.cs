@@ -189,15 +189,6 @@ namespace Forum.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
         public ActionResult CreateSubject(int id)
         {
             Category cat = db.Categories.Find(id);

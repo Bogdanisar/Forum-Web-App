@@ -24,6 +24,8 @@ namespace Forum.Controllers
                        where upvote.SubjectId == subjectId
                        select upvote;
 
+            Debug.WriteLine(userId);
+
             if (rows.Count() == 0)
             {
                 return "Vote";
@@ -43,6 +45,7 @@ namespace Forum.Controllers
         private string ChangeVote(int subjectId)
         {
             string userId = User.Identity.GetUserId();
+   
 
             var rows = from upvote in db.SubjectUpvotes
                        where upvote.UserId == userId
@@ -102,7 +105,7 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator,User,Moderator")]
         public string Initialize(string subjectId)
         {
-            string userId = User.Identity.Name;
+            string userId = User.Identity.GetUserId();
             int subId = Convert.ToInt32(subjectId);
 
             var map = new Dictionary<string, string>();

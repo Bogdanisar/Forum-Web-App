@@ -77,10 +77,7 @@ namespace Forum.Controllers
             ViewBag.CategoryName = categoryName;
             return View(subject);
         }
-
-
-
-
+        
 
         public ActionResult Show(int id)
         {

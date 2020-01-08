@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Edit Profile";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    <li>
+        Name: @ViewBag.Profile.Name
+    </li>
+    <li>
+        Birthday: @ViewBag.Profile.Birthday.ToShortDateString()
+    </li>
+    <a class="btn btn-success" href="/Profile/Edit/@ViewBag.Profile.ProfileId">Edit Profile</a>
+</div>

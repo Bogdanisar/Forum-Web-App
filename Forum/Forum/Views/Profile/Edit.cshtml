@@ -1,0 +1,36 @@
+﻿@model Forum.Models.Profile
+@{
+    ViewBag.Title = "Edit profile";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Profile", method: FormMethod.Post, routeValues: new
+{
+    id = Model.ProfileId
+}))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.ValidationSummary(false, "Validation errors", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.ProfileId)
+
+    @Html.LabelFor(m => m.Name)
+    <br />
+    @Html.EditorFor(m => m.Name)
+    <br />
+    @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+    <br />
+
+    @Html.LabelFor(m => m.Birthday)
+    <br />
+    @Html.EditorFor(m => m.Birthday)
+    <br />
+    @Html.ValidationMessageFor(m => m.Birthday, null, new { @class = "text-danger" })
+    <br />
+
+    <br />
+    <button class="btn btn-success" type="submit">Edit profile</button>
+}
+
