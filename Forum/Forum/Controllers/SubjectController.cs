@@ -28,7 +28,12 @@ namespace Forum.Controllers
                               where subject.Description.Contains(word) || subject.Title.Contains(word)
                               select subject;
 
+            var commentList = from comment in db.Comments
+                              where comment.Content.Contains(word)
+                              select comment;
+
             ViewBag.Subjects = subjectList.ToList<Subject>();
+            ViewBag.Comments = commentList.ToList<Comment>();
             ViewBag.Word = word;
 
             return View();
