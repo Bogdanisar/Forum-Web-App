@@ -70,11 +70,8 @@ namespace Forum.Controllers
 
             if ((User.IsInRole("User") || User.IsInRole("Moderator")) && comment.UserId != User.Identity.GetUserId())
             {
-                return RedirectToAction(
-                    "ErrorWithMessage",
-                    "Error",
-                    new { message = "You don't have permission to edit this comment!" }
-                );
+                TempData["message"] = "You don't have permission to edit that comment!";
+                return RedirectToAction("Show", "Subject", new { @id = comment.SubjectId });
             }
             
             return View(comment);
@@ -88,11 +85,8 @@ namespace Forum.Controllers
             Comment comment = db.Comments.Find(id);
             if ((User.IsInRole("User") || User.IsInRole("Moderator")) && comment.UserId != User.Identity.GetUserId())
             {
-                return RedirectToAction(
-                    "ErrorWithMessage",
-                    "Error",
-                    new { message = "You don't have permission to edit that comment!" }
-                );
+                TempData["message"] = "You don't have permission to edit that comment!";
+                return RedirectToAction("Show", "Subject", new { @id = comment.SubjectId });
             }
 
             try
@@ -144,11 +138,8 @@ namespace Forum.Controllers
             Comment comment = db.Comments.Find(id);
             if (User.IsInRole("User") && comment.UserId != User.Identity.GetUserId())
             {
-                return RedirectToAction(
-                    "ErrorWithMessage",
-                    "Error",
-                    new { message = "You don't have permission to delete that comment!" }
-                );
+                TempData["message"] = "You don't have permission to delete that comment!";
+                return RedirectToAction("Show", "Subject", new { @id = comment.SubjectId });
             }
 
             if (this.DeleteComment(db, id))
@@ -159,11 +150,8 @@ namespace Forum.Controllers
             }
             else
             {
-                return RedirectToAction(
-                    "ErrorWithMessage",
-                    "Error",
-                    new { message = "Failed to delete comment!" }
-                );
+                TempData["message"] = "Failed to delete comment :(";
+                return RedirectToAction("Show", "Subject", new { @id = comment.SubjectId });
             }
         }
     }
