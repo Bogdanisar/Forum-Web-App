@@ -12,7 +12,7 @@
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
-    @Html.ValidationSummary(false, "Erori de validare", new { @class = "text-danger" })
+    @Html.ValidationSummary(false, "Validation errors", new { @class = "text-danger" })
 
     @Html.HiddenFor(m => m.CategoryId)
     
@@ -20,8 +20,6 @@
     @Html.LabelFor(m => m.CategoryName, "Category name")
     <br />
     @Html.EditorFor(m => m.CategoryName)
-    <br />
-    @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
     <br />
 
     <br />

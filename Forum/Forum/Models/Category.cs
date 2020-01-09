@@ -11,7 +11,7 @@ namespace Forum.Models
         [Key]
         public int CategoryId { get; set; }
 
-        [Required(ErrorMessage = "Numele categoriei este obligatoriu")]
+        [Required(ErrorMessage = "Category name is required!")]
         public string CategoryName { get; set; }
 
         public DateTime Date { get; set; }
