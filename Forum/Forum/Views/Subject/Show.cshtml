@@ -36,7 +36,7 @@
         ViewBag.CommentIncludeActions = true;
 
         <text>
-            @Html.Partial("CommentInfo", (Forum.Models.Comment)ViewBag.Comments[i]);
+            @Html.Partial("CommentInfo", (Forum.Models.Comment)ViewBag.Comments[i])
         </text>
     }
 
