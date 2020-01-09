@@ -148,16 +148,19 @@ textarea {
     font-family: 'Oswald', serif;
 }
 
-#custom .navbar a {
+#custom .navbar a:not(.navbar-dropdown-anchor) {
     color: white;
+    background-color: black;
 }
 
-#custom .navbar a:hover {
-    color: #5cb85c;
+#custom .navbar a:not(navbar-dropdown-anchor):hover {
+    color: deepskyblue;
+    /*background-color: white;*/
 }
 
-#custom .navbar-brand {
+#custom .navbar-brand:not(#specifity1):not(#specifity2) {
     font-family: 'Ma Shan Zheng', cursive;
     font-size: 25px;
     font-weight: bold;
+    background-color: black;
 }
