@@ -5,7 +5,7 @@
 
     @if (ViewBag.UserId == Model.UserId || User.IsInRole("Moderator") || User.IsInRole("Administrator"))
     {
-        <div class="panel-footer article-panel-footer" onmouseover="this.addEventListener('click', function () { event.stopPropagation(); event.stopImmediatePropagation(); }, true); ">
+        <div class="panel-footer article-panel-footer">
 
             @if (ViewBag.UserId == Model.UserId)
             {

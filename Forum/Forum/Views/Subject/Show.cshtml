@@ -11,7 +11,10 @@
 <hr />
 
 <a class="btn btn-info" href="/Category/Show/@Model.CategoryId">All category subjects</a>
-<a class="btn btn-info" href="/Subject/CreateComment/@Model.SubjectId">Add a new comment in this subject</a>
+@if (Request.IsAuthenticated) 
+{
+    <a class="btn btn-info" href="/Subject/CreateComment/@Model.SubjectId">Add a new comment in this subject</a>
+}
 
 <script type="text/javascript">
     function DateToString(date) {
@@ -29,103 +32,11 @@
 
     @for (int i = 0; i < ViewBag.Comments.Count; ++i)
     {
-        Forum.Models.Comment comment = ViewBag.Comments[i];
-        string divId = $"comment{i}";
+        ViewBag.CommentClickable = null;
+        ViewBag.CommentIncludeActions = true;
 
         <text>
-            <div id="@divId" class="commentDiv panel panel-default form-and-dropdown-wrapper" CommentId="@comment.CommentId" style="margin: 20px 0px;">
-                <div class="comm_box panel-body" style="background-color: white">
-                    <div class="left_coll">
-                        <i class="glyphicon glyphicon-user"></i>
-                        <strong style="font-size: medium">
-                            <a href="/Profile/Index/@comment.User.Id" style="color: black">
-                                @comment.User.UserName
-                            </a>
-                        </strong>
-                        <br />
-
-                        <p style="font-size: small">
-                            @switch (comment.Date.Month)
-                            {
-                                case 1:<text> January </text> break;
-                                case 2: <text> February  </text> break;
-                                case 3: <text> March  </text> break;
-                                case 4: <text> April </text> break;
-                                case 5: <text> May </text> break;
-                                case 6: <text> June </text> break;
-                                case 7: <text> July </text> break;
-                                case 8: <text> August </text> break;
-                                case 9: <text> September </text> break;
-                                case 10: <text> October </text> break;
-                                case 11: <text> November </text> break;
-                                case 12: <text> December </text> break;
-                                default: <text> - </text>break;
-                            }
-                            @comment.Date.Day, @comment.Date.Year @comment.Date.ToString("HH:mm:ss")
-                        </p>
-
-                        <span CommentId="@comment.CommentId" class="comment-vote-container" style="color: blue; visibility: hidden;" onclick="VoteComment(this, @comment.CommentId)">
-                            <span class="vote_count"></span>
-                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                        </span>
-                    </div>
-                    <div class="right_coll">
-                        @Html.Raw(comment.Content)
-                    </div>
-                    @if (Request.IsAuthenticated)
-                    {
-                        <div class="drop_comm">
-                            @if (ViewBag.UserId == comment.UserId)
-                            {
-                                <a href="/Comment/Edit/@comment.CommentId" style="text-decoration: none;">
-                                    <i class="glyphicon glyphicon-edit" style="color: green"></i>
-                                </a>
-                                <br />
-                            }
-                            @if (ViewBag.UserId == comment.UserId || User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                            {
-                                <form method="post" action="/Comment/Delete/@comment.CommentId" style="display: inline-block;">
-                                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-
-                                    <button type="submit" style="padding: 0; border: none; background: none;">
-                                        <i class="glyphicon glyphicon-remove" style="color: red"></i>
-                                    </button>
-                                </form>
-                            }
-                        </div>
-                    }
-                </div>
-
-
-                <div style="display: none">
-                    @using (Html.BeginForm(actionName: "Delete", controllerName: "Comment", routeValues: new
-                    {
-                        id = comment.CommentId
-                    }))
-                    {
-                        @Html.HttpMethodOverride(HttpVerbs.Delete)
-                    }
-                </div>
-
-                @if (Request.IsAuthenticated && User.IsInRole("Administrator"))
-                {
-                    <text>
-                        <div class="panel-footer article-panel-footer">
-                            <div class="dropdown">
-                                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Admin
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="/Comment/Edit/@comment.CommentId">Edit</a></li>
-                                    <li><a href="#" class="dropdown-delete">Delete</a></li>
-                                    <li><a onclick="ClearComment(this, @comment.CommentId)">Clear votes</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </text>
-                }
-            </div>
+            @Html.Partial("CommentInfo", (Forum.Models.Comment)ViewBag.Comments[i]);
         </text>
     }
 
