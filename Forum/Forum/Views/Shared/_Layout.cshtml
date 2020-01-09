@@ -32,11 +32,11 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Menu<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/Category/Index">Category Index</a></li>
-                                <li><a href="/Subject/Index">Subject Index</a></li>
-                                <li><a href="/Comment/Index">Comment Index</a></li>
+                                <li><a href="/Category/Index" class="navbar-dropdown-anchor">Category Index</a></li>
+                                <li><a href="/Subject/Index" class="navbar-dropdown-anchor">Subject Index</a></li>
+                                <li><a href="/Comment/Index" class="navbar-dropdown-anchor">Comment Index</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/Users/Index">Users</a></li>
+                                <li><a href="/Users/Index" class="navbar-dropdown-anchor">Users</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -64,6 +64,7 @@
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
     @Scripts.Render("~/Scripts/Summernote.js");
+    @Scripts.Render("~/Scripts/SubjectUpvote.js");
 
     <script>
         $(".dropdown-delete").click(function (e) {

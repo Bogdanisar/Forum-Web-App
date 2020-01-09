@@ -45,22 +45,14 @@ textarea {
 
 
 
-
+.panel-body {
+    padding-top: 10px;
+    padding-bottom: 1px;
+}
 
 .panel-article {
     box-shadow: 0 2px 6px #ccc;
     border-radius: 0 !important;
-}
-
-.article-panel-footer {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: space-around;
-}
-
-.article-panel-footer.around {
-    justify-content: space-around;
 }
 
 .article-heading {
@@ -83,12 +75,23 @@ textarea {
 
 .article-content-wrapper {
     font-size: 13px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    /*padding-top: 15px;
+    padding-bottom: 15px;*/
 }
 
 .article-content-wrapper * {
     font-size: 13px !important;
+}
+
+.article-panel-footer {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-around;
+}
+
+.article-panel-footer.around {
+    justify-content: space-around;
 }
 
 .article-meta {
@@ -98,6 +101,7 @@ textarea {
     align-items: center;
     justify-content: space-between;
     padding: 15px;
+    font-size: 1.3em;
 }
 
 .article-meta:hover {
@@ -144,18 +148,21 @@ textarea {
     font-family: 'Oswald', serif;
 }
 
-#custom .navbar a {
+#custom .navbar a:not(.navbar-dropdown-anchor) {
     color: white;
+    background-color: black;
 }
 
-#custom .navbar a:hover {
-    color: #5cb85c;
+#custom .navbar a:not(navbar-dropdown-anchor):hover {
+    color: deepskyblue;
+    /*background-color: white;*/
 }
 
-#custom .navbar-brand {
+#custom .navbar-brand:not(#specifity1):not(#specifity2) {
     font-family: 'Ma Shan Zheng', cursive;
     font-size: 25px;
     font-weight: bold;
+    background-color: black;
 }
 
 
