@@ -6,7 +6,7 @@
 
 
 
-<h2>Adaugare Categorie</h2>
+<h2>Add category</h2>
 
 @*<form method="post" action="/Category/New">*@
 @using (Html.BeginForm(actionName: "New", controllerName: "Category"))
@@ -15,7 +15,7 @@
 
     @*<label>Nume categorie</label>*@
     @*@Html.Label("CategoryName", "Nume categorie")*@
-    @Html.LabelFor(m => m.CategoryName)
+    @Html.LabelFor(m => m.CategoryName, "Category name")
     <br />
     @*<input type="text" name="CategoryName" />*@
     @*@Html.TextBox("CategoryName", null, new { @class = "form-control" })*@
@@ -23,7 +23,7 @@
     <br />
     @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
     <br /><br /><br /><br />
-    <button class="btn btn-success" type="submit">Adauga categorie</button>
+    <button class="btn btn-success" type="submit">Add category</button>
 @*</form>*@
 }
 

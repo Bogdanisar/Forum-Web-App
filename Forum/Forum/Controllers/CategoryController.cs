@@ -41,7 +41,7 @@ namespace Forum.Controllers
                     cat.Date = DateTime.Now;
                     db.Categories.Add(cat);
                     db.SaveChanges();
-                    TempData["message"] = "Categoria a fost adaugata!";
+                    TempData["message"] = "Category successfully added!";
                     return RedirectToAction("Index");
                 }
             }
