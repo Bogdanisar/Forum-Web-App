@@ -5,68 +5,59 @@
 
 <h2> @ViewBag.Title </h2>
 
-<body onload="Initialize()"> </body>
-
 <div class="panel panel-default form-and-dropdown-wrapper">
     @Html.Partial("SubjectInfo", Model)
 
-    <div style="display: none">
-        <p id="p_vote_count">Vote count: </p> @*TODO*@
+    @if (ViewBag.UserId == Model.UserId || User.IsInRole("Moderator") || User.IsInRole("Administrator")) { 
+        <div class="panel-footer article-panel-footer">
 
-        @if (Request.IsAuthenticated)
-        {
-            <a id="vote_btn" class="btn btn-success" type="button" onclick='Vote()' value="Vote">Vote</a> @*TODO*@
-        }
-    </div>
-
-    <div class="panel-footer article-panel-footer">
-
-        @if (ViewBag.UserId == Model.UserId)
-        {
-            <a class="btn btn-primary" href="/Subject/Edit/@Model.SubjectId">Edit subject</a>
-
-            <form action="/Subject/Delete" method="post">
-                @Html.HttpMethodOverride(HttpVerbs.Delete)
-
-                @Html.Hidden("id", Model.SubjectId)
-
-                <button class="btn btn-danger" type="submit">Delete subject</button>
-            </form>
-        }
-
-
-        <div style="display: none">
-            @using (Html.BeginForm(actionName: "Delete", controllerName: "Subject", routeValues: new
+            @if (ViewBag.UserId == Model.UserId)
             {
-                id = Model.SubjectId
-            }))
-            {
-                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <a class="btn btn-primary" href="/Subject/Edit/@Model.SubjectId">Edit subject</a>
+
+                <form action="/Subject/Delete" method="post">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+
+                    @Html.Hidden("id", Model.SubjectId)
+
+                    <button class="btn btn-danger" type="submit">Delete subject</button>
+                </form>
             }
-        </div>
 
-        @if (User.IsInRole("Moderator") || User.IsInRole("Administrator")) {
-            <div class="dropdown">
-                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Sudo
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <li class="dropdown-header">Admin</li>
-                        <li><a href="/Subject/Edit/@Model.SubjectId">Edit subject</a></li>
-                        <li><a href="#" class="dropdown-delete">Delete subject</a></li>
-                        <li><a href="#" onclick='Clear()'>Clear votes</a></li>
-                        <li role="separator" class="divider"></li>
-                    }
-                    <li class="dropdown-header">Moderator</li>
-                    <li><a href="/Subject/EditCategory/@Model.SubjectId">Edit subject category</a></li>
-                </ul>
+
+            <div style="display: none">
+                @using (Html.BeginForm(actionName: "Delete", controllerName: "Subject", routeValues: new
+                {
+                    id = Model.SubjectId
+                }))
+                {
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                }
             </div>
-        }
 
-    </div>
+            @if (User.IsInRole("Moderator") || User.IsInRole("Administrator")) {
+                <div class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Sudo
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="dropdown-header">Admin</li>
+                            <li><a href="/Subject/Edit/@Model.SubjectId">Edit subject</a></li>
+                            <li><a href="#" class="dropdown-delete">Delete subject</a></li>
+                            <li><a href="#" onclick='Clear(@Model.SubjectId)'>Clear votes</a></li>
+                            <li role="separator" class="divider"></li>
+                        }
+                        <li class="dropdown-header">Moderator</li>
+                        <li><a href="/Subject/EditCategory/@Model.SubjectId">Edit subject category</a></li>
+                    </ul>
+                </div>
+            }
+
+        </div>
+    }
 </div>
 
 <hr />
@@ -119,48 +110,6 @@
 
 
 
-
-
-<script type="text/javascript">
-    function Vote() {
-        $.ajax({
-            type: 'GET',
-            url: '/UpvoteSubject/Vote',
-            data: { 'subjectId': JSON.stringify(@Model.SubjectId) },
-            success: function (result) {
-                var tmp = JSON.parse(result);
-
-                document.getElementById("vote_btn").value = tmp.VoteText;
-                document.getElementById("p_vote_count").innerHTML = "Vote count: " + tmp.VoteCount;
-            },
-            error: function (result) {
-                alert("Error " + result)
-            }
-        });
-    }
-    function Clear() {
-        $.ajax({
-            type: 'GET',
-            url: '/UpvoteSubject/Clear',
-            success: function (result) {
-                alert(result);
-            }
-        });
-    }
-    function Initialize() {
-        $.ajax({
-            type: 'GET',
-            url: '/UpvoteSubject/Initialize',
-            data: { 'subjectId': JSON.stringify(@Model.SubjectId) },
-            success: function (result) {
-                var tmp = JSON.parse(result);
-
-                document.getElementById("vote_btn").value = tmp.VoteText;
-                document.getElementById("p_vote_count").innerHTML = "Vote count: " + tmp.VoteCount;
-            }
-        });
-    }
- </script>
 
 
 

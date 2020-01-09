@@ -19,16 +19,13 @@ namespace Forum.Controllers
 
         private string GetVoteButtonStatus(string userId, int subjectId)
         {
-            var rows = from upvote in db.SubjectUpvotes
-                       where upvote.UserId == userId
-                       where upvote.SubjectId == subjectId
-                       select upvote;
+            var rows = db.SubjectUpvotes.Where(su => su.UserId == userId && su.SubjectId == subjectId).ToList();
 
             if (rows.Count() == 0)
             {
-                return "Vote";
+                return "0";
             }
-            return "Unvote";
+            return "1";
         }
 
         private string GetVoteCount(int subjectId)
@@ -57,7 +54,7 @@ namespace Forum.Controllers
                     db.SubjectUpvotes.Remove(up);
                 }
                 db.SaveChanges();
-                return "Vote";
+                return "0";
             }
             else
             {
@@ -66,15 +63,15 @@ namespace Forum.Controllers
                 us.SubjectId = subjectId;
                 db.SubjectUpvotes.Add(us);
                 db.SaveChanges();
-                return "Unvote";
+                return "1";
             }
         }
 
         [WebMethod]
-        [Authorize(Roles = "Administrator,User,Moderator")]
-        public string Clear()
+        [Authorize(Roles = "Administrator")]
+        public string Clear(int subjectId)
         {
-            var rows = from upvote in db.SubjectUpvotes select upvote;
+            var rows = from upvote in db.SubjectUpvotes where upvote.SubjectId == subjectId select upvote;
             foreach (var up in rows)
             {
                 db.SubjectUpvotes.Remove(up);
@@ -91,7 +88,7 @@ namespace Forum.Controllers
             int subId = Convert.ToInt32(subjectId);
             var map = new Dictionary<string, string>();
 
-            map.Add("VoteText", ChangeVote(subId));
+            map.Add("Voted", ChangeVote(subId));
             map.Add("VoteCount", GetVoteCount(subId));
 
             Debug.WriteLine(JsonConvert.SerializeObject(map));
@@ -99,15 +96,22 @@ namespace Forum.Controllers
         }
 
         [WebMethod]
-        [Authorize(Roles = "Administrator,User,Moderator")]
         public string Initialize(string subjectId)
         {
-            string userId = User.Identity.Name;
             int subId = Convert.ToInt32(subjectId);
 
             var map = new Dictionary<string, string>();
 
-            map.Add("VoteText", GetVoteButtonStatus(userId, subId));
+            if (Request.IsAuthenticated)
+            {
+                string userId = User.Identity.GetUserId();
+                map.Add("Voted", GetVoteButtonStatus(userId, subId));
+            }
+            else
+            {
+                map.Add("Voted", "0");                    
+            }
+
             map.Add("VoteCount", GetVoteCount(subId));
             
             Debug.WriteLine(JsonConvert.SerializeObject(map));

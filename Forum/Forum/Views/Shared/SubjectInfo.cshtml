@@ -4,24 +4,28 @@
 </div>
 
 <div class="panel-body">
-    <span class="article-content-title">Continut articol</span>
-    <br />
     <div class="article-content-wrapper">
         @Html.Raw(Model.Description)
     </div>
 </div>
-<div class="article-meta">
-    <span class="">
+<div class="article-meta" onclick="event.stopPropagation(); event.stopImmediatePropagation();">
+    <div>
+        <span SubjectId="@Model.SubjectId" class="subject-vote-container" style="color: blue; visibility: hidden" onclick="VoteSubject(this, @Model.SubjectId, event)">
+            <span class="vote_count"></span>
+            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+        </span>
+    </div>
+    <div class="">
         <i class="glyphicon glyphicon-user"></i>
         <strong> @Model.User.UserName </strong>
-    </span>
-    <div>
-        <i class="glyphicon glyphicon-bookmark"></i>
-        @Model.Category.CategoryName
     </div>
     <div>
         <i class="glyphicon glyphicon-time"></i>
         @Model.Date
+    </div>
+    <div>
+        <i class="glyphicon glyphicon-bookmark"></i>
+        @Model.Category.CategoryName
     </div>
 </div>
 
