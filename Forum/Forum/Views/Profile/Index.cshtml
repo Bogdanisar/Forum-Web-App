@@ -2,23 +2,71 @@
     ViewBag.Title = "User profile";
 }
 
-<div class="profile_class">
-    <p class="profile_p">
-        <br />
-        <i class="glyphicon glyphicon-user"></i> @ViewBag.Profile.Name
-        <br />
-        <i class="glyphicon glyphicon-map-marker"></i> @ViewBag.Profile.City
-        <br />
-        <i class="glyphicon glyphicon-envelope"></i> @ViewBag.UserEmail
-        <br />
-        <i class="glyphicon glyphicon-book"></i> @ViewBag.SubjectNumber
-        <i class="glyphicon glyphicon-comment"></i> @ViewBag.CommentNumber
-        <br />
-        <i class="glyphicon glyphicon-gift"></i> @ViewBag.Profile.Birthday
-    </p>
+<div class="profile_class" style="padding-top: 1ex">
+    <table class="table table-bordered">
+        <tbody>
+            <thead style="background-color: white">
+                <td>
+                    Summary - @ViewBag.Profile.Name
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || ViewBag.UserId == ViewBag.Profile.ProfileId)
+                    {
+                        <a href="/Profile/Edit/@ViewBag.Profile.ProfileId" style="text-decoration: none;">
+                            <i class="glyphicon glyphicon-edit" style="color: green"></i>
+                        </a>
+                    }
+                </td>
+            </thead>
+            <tr>
+                <td>
+                    <i class="glyphicon glyphicon-user"></i><strong> Name: </strong>
+                </td>
+                <td>
+                    @ViewBag.Profile.Name
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="glyphicon glyphicon-map-marker"></i><strong> Location: </strong>
+                </td>
+                <td>
+                    @ViewBag.Profile.City
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="glyphicon glyphicon-envelope"></i><strong> Email: </strong>
+                </td>
+                <td>
+                    @ViewBag.UserEmail
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="glyphicon glyphicon-book"></i><strong> Subjects: </strong>
+                </td>
+                <td>
+                    @ViewBag.SubjectNumber
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="glyphicon glyphicon-comment"></i><strong> Comments: </strong>
+                </td>
+                <td>
+                    @ViewBag.CommentNumber
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="glyphicon glyphicon-gift"></i><strong> Birthday: </strong>
+                </td>
+                <td>
+                    @ViewBag.Profile.Birthday
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || ViewBag.UserId == ViewBag.Profile.ProfileId)
-    {
-        <a class="btn btn-success" href="/Profile/Edit/@ViewBag.Profile.ProfileId">Edit Profile</a>
-    }
 </div>
