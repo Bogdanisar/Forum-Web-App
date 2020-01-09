@@ -61,19 +61,7 @@ namespace Forum.Controllers
             return View(comment);
         }
 
-
-        public ActionResult Show(int id)
-        {
-            Comment comment = db.Comments.Find(id);
-
-            if (comment == null)
-            {
-                return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid comment id" });
-                //return RedirectToAction("Error", "Error");
-            }
-
-            return View(comment);
-        }
+        
 
         [Authorize(Roles = "User,Moderator,Administrator")]
         public ActionResult Edit(int id)
