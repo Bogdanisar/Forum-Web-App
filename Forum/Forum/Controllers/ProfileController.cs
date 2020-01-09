@@ -1,4 +1,5 @@
-﻿using Forum.Models;
+﻿using Forum.App_Start;
+using Forum.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -12,6 +13,7 @@ using System.Web.Mvc;
 
 namespace Forum.Controllers
 {
+    [MessageFilter]
     public class ProfileController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -81,8 +83,7 @@ namespace Forum.Controllers
                         TempData["message"] = "Profile changed!";
                         db.SaveChanges();
                     }
-
-                    TempData["message"] = "Edit successful";
+                    
                     return RedirectToAction("Index", new { id = requestProfile.ProfileId } );
                 }
             }
