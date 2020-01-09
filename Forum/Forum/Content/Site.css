@@ -189,6 +189,10 @@ textarea {
     width: auto;
 }
 
+.comm_box {
+    padding-right: 2px;
+}
+
 .comm_box:after {
     content: "";
     display: table;

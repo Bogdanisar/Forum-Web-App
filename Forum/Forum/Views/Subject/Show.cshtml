@@ -115,7 +115,11 @@
                             }
                             @comment.Date.Day, @comment.Date.Year @comment.Date.ToString("HH:mm:ss")
                         </p>
-                        <p class="p_vote_count" style="display: inline-block;"></p>
+                        
+                        <span CommentId="@comment.CommentId" class="comment-vote-container" style="color: blue; visibility: hidden;" onclick="VoteComment(this, @comment.CommentId)">
+                            <span class="vote_count"></span>
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                        </span>
                     </div>
                     <div class="right_coll">
                         @Html.Raw(comment.Content)
@@ -144,14 +148,32 @@
                     }
                 </div>
 
-                @if (Request.IsAuthenticated)
+                
+                <div style="display: none">
+                    @using (Html.BeginForm(actionName: "Delete", controllerName: "Comment", routeValues: new
+                    {
+                        id = comment.CommentId
+                    }))
+                    {
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    }
+                </div>
+
+                @if (Request.IsAuthenticated && User.IsInRole("Administrator"))
                 {
                     <text>
                         <div class="panel-footer article-panel-footer">
-                            @if (Request.IsAuthenticated)
-                            {
-                                <input class="btn btn-success vote_btn" type="button" onclick="VoteComment('@divId', @comment.CommentId)" value="Vote" style="display: none;">
-                            }
+                            <div class="dropdown">
+                                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Admin
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a href="/Comment/Edit/@comment.CommentId">Edit</a></li>
+                                    <li><a href="#" class="dropdown-delete">Delete</a></li>
+                                    <li><a onclick="ClearComment(this, @comment.CommentId)">Clear votes</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </text>
                 }
@@ -161,11 +183,3 @@
 
 </div>
 
-
-
-
-
-
-
-
-@Html.Partial("CommentUpvoteScript", Model)
