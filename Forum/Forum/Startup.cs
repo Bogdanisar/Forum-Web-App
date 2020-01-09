@@ -74,8 +74,9 @@ namespace Forum
                     {
                         Profile tmp = new Profile();
                         tmp.ProfileId = user.Id;
-                        tmp.Name = "Default";
-                        tmp.Birthday = DateTime.Now;
+                        tmp.Name = info[i].role;
+                        tmp.Birthday = "April 09, 1998";
+                        tmp.City = "Suceava, Romania";
                         db.Profiles.Add(tmp);
                         db.SaveChanges();
                     } catch(Exception e)

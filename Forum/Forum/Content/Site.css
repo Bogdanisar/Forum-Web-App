@@ -157,3 +157,33 @@ textarea {
     font-size: 25px;
     font-weight: bold;
 }
+
+
+.profile_class .glyphicon {
+    font-size: 45px;
+}
+
+.profile_p {
+    font-size: 45px;
+}
+
+.left_coll {
+    float: left;
+    width: 20%;
+}
+
+.right_coll {
+    float: left;
+    width: 78%;
+}
+
+.drop_comm {
+    float: left;
+    width: auto;
+}
+
+.comm_box:after {
+    content: "";
+    display: table;
+    clear: both;
+}

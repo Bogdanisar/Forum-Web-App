@@ -14,8 +14,10 @@ namespace Forum.Models
         [Required]
         public string Name { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime Birthday { get; set; }
-        // public byte[] Image { get; set; }
+        [Required]
+        public string Birthday { get; set; }
+
+        [Required]
+        public string City { get; set; }
     }
 }

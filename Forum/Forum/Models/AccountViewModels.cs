@@ -72,7 +72,11 @@ namespace Forum.Models
 
         [Required]
         [Display(Name = "Birthday")]
-        public DateTime Birthday { get; set; }
+        public string Birthday { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        public string City { get; set; }
 
         [Required]
         [EmailAddress]

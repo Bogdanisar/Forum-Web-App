@@ -1,5 +1,6 @@
 ﻿using Forum.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,6 +34,10 @@ namespace Forum.Controllers
                                          where comment.UserId == id
                                          select comment).Count();
 
+                var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var user = UserManager.FindById(id);
+
+                ViewBag.UserEmail = user.Email;
                 ViewBag.UserId = User.Identity.GetUserId();
             } catch (Exception e)
             {
@@ -61,6 +66,7 @@ namespace Forum.Controllers
                     {
                         profile.Name = requestProfile.Name;
                         profile.Birthday = requestProfile.Birthday;
+                        profile.City = requestProfile.City;
                         TempData["message"] = "Profile changed!";
                         db.SaveChanges();
                     }

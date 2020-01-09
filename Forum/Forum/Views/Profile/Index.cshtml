@@ -1,21 +1,21 @@
 ﻿@{
-    ViewBag.Title = "Edit Profile";
+    ViewBag.Title = "User profile";
 }
 
-<h2>@ViewBag.Title</h2>
-<div>
-    <li>
-        Name: @ViewBag.Profile.Name
-    </li>
-    <li>
-        Birthday: @ViewBag.Profile.Birthday.ToShortDateString()
-    </li>
-    <li>
-        Subjects: @ViewBag.SubjectNumber
-    </li>
-    <li>
-        Comments: @ViewBag.CommentNumber
-    </li>
+<div class="profile_class">
+    <p class="profile_p">
+        <br />
+        <i class="glyphicon glyphicon-user"></i> @ViewBag.Profile.Name
+        <br />
+        <i class="glyphicon glyphicon-map-marker"></i> @ViewBag.Profile.City
+        <br />
+        <i class="glyphicon glyphicon-envelope"></i> @ViewBag.UserEmail
+        <br />
+        <i class="glyphicon glyphicon-book"></i> @ViewBag.SubjectNumber
+        <i class="glyphicon glyphicon-comment"></i> @ViewBag.CommentNumber
+        <br />
+        <i class="glyphicon glyphicon-gift"></i> @ViewBag.Profile.Birthday
+    </p>
 
     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || ViewBag.UserId == ViewBag.Profile.ProfileId)
     {

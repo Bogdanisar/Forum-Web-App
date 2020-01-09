@@ -156,8 +156,7 @@ namespace Forum.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
-
-                Debug.WriteLine(user.Id);
+                
 
                 if (result.Succeeded)
                 {
@@ -179,6 +178,7 @@ namespace Forum.Controllers
                         tmp.ProfileId = user.Id;
                         tmp.Name = model.Name;
                         tmp.Birthday = model.Birthday;
+                        tmp.City = model.City;
                         db.Profiles.Add(tmp);
                         db.SaveChanges();
                     } catch(Exception e)
