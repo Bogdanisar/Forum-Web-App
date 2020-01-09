@@ -1,8 +1,117 @@
-﻿
-@{
-    Layout = null;
+﻿@model Forum.Models.Comment
+
+@{ 
+    string divId = $"comment{Model.CommentId}";
 }
 
-<p>User: @Model.User.UserName </p>
-<p>Content: @Html.Raw(Model.Content) </p>
-<p>Date: @Model.Date </p>
+<div id="@divId" class="commentDiv panel panel-default form-and-dropdown-wrapper" CommentId="@Model.CommentId" style="margin: 20px 0px;">
+    <div class="comm_box panel-body" style="background-color: white">
+        <div class="left_coll">
+            <i class="glyphicon glyphicon-user"></i>
+            <strong style="font-size: medium">
+                <a href="/Profile/Index/@Model.User.Id" style="color: black">
+                    @Model.User.UserName
+                </a>
+            </strong>
+            <br />
+
+            <p style="font-size: small">
+                @switch (Model.Date.Month)
+                {
+                    case 1:<text> January </text> break;
+                    case 2: <text> February  </text> break;
+                    case 3: <text> March  </text> break;
+                    case 4: <text> April </text> break;
+                    case 5: <text> May </text> break;
+                    case 6: <text> June </text> break;
+                    case 7: <text> July </text> break;
+                    case 8: <text> August </text> break;
+                    case 9: <text> September </text> break;
+                    case 10: <text> October </text> break;
+                    case 11: <text> November </text> break;
+                    case 12: <text> December </text> break;
+                    default: <text> - </text>break;
+                }
+                @Model.Date.Day, @Model.Date.Year @Model.Date.ToString("HH:mm:ss")
+            </p>
+
+            <span CommentId="@Model.CommentId" class="comment-vote-container" style="color: blue; visibility: hidden;" onclick="VoteComment(this, @Model.CommentId)">
+                <span class="vote_count"></span>
+                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+            </span>
+        </div>
+        <div class="right_coll"
+            
+            @if (ViewBag.CommentClickable != null)
+            {
+                <text>
+                    onclick="window.location = '/Subject/Show/@Model.SubjectId#@divId'"
+                </text>
+            }
+
+            >
+            @Html.Raw(Model.Content)
+        </div>
+        @if (Request.IsAuthenticated)
+        {
+            <div class="drop_comm">
+                @if (ViewBag.UserId == Model.UserId)
+                {
+                    <a href="/Comment/Edit/@Model.CommentId" style="text-decoration: none;">
+                        <i class="glyphicon glyphicon-edit" style="color: green"></i>
+                    </a>
+                    <br />
+                }
+                @if (ViewBag.UserId == Model.UserId || User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                {
+                    <form method="post" action="/Comment/Delete/@Model.CommentId" style="display: inline-block;">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+
+                        <button type="submit" style="padding: 0; border: none; background: none;">
+                            <i class="glyphicon glyphicon-remove" style="color: red"></i>
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+    </div>
+
+    @if (ViewBag.CommentIncludeActions != null)
+    {
+
+        <div style="display: none">
+            @using (Html.BeginForm(actionName: "Delete", controllerName: "Comment", routeValues: new
+            {
+                id = Model.CommentId
+            }))
+            {
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+            }
+        </div>
+
+        if (Request.IsAuthenticated && User.IsInRole("Administrator"))
+        {
+            <text>
+                <div class="panel-footer article-panel-footer">
+                    <div class="dropdown">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Admin
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/Comment/Edit/@Model.CommentId">Edit</a></li>
+                            <li><a href="#" class="dropdown-delete">Delete</a></li>
+                            <li><a onclick="ClearComment(this, @Model.CommentId)">Clear votes</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </text>
+        }
+
+    }
+</div>
+
+@{ 
+    ViewBag.CommentClickable = null;
+    ViewBag.CommentIncludeActions = null;
+}

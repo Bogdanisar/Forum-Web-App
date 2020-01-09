@@ -18,16 +18,16 @@ namespace Forum.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         [NonAction]
-        public bool GetVoteStatus(string userId, int commId)
+        public string GetVoteStatus(string userId, int commId)
         {
             Comment comment = db.Comments.Find(commId);
             List<ApplicationUser> users = comment.UpvotingUsers.Where(u => u.Id == userId).ToList();
-            if (users.Count > 0)
+            if (users.Count == 0)
             {
-                return true;
+                return "0";
             }
 
-            return false;
+            return "1";
         }
 
         [NonAction]
@@ -89,16 +89,19 @@ namespace Forum.Controllers
         {
             try
             {
-                var map = new Dictionary<string, string>();
-
                 int commId = Convert.ToInt32(CommentId);
-                map.Add("VoteCount", GetVoteCount(commId));
 
+                var map = new Dictionary<string, string>();
                 if (Request.IsAuthenticated)
                 {
                     string userId = User.Identity.GetUserId();
-                    map.Add("VoteText", GetVoteStatus(userId, commId) ? "Unvote" : "Vote");
+                    map.Add("Voted", GetVoteStatus(userId, commId));
                 }
+                else 
+                {
+                    map.Add("Voted", "0");
+                }
+                map.Add("VoteCount", GetVoteCount(commId));
 
                 Debug.WriteLine(JsonConvert.SerializeObject(map));
                 return JsonConvert.SerializeObject(map);
@@ -109,10 +112,7 @@ namespace Forum.Controllers
 
                 var map = new Dictionary<string, string>();
                 map.Add("VoteCount", "0");
-                if (Request.IsAuthenticated)
-                {
-                    map.Add("VoteText", "Vote");
-                }
+                map.Add("Voted", "0");
 
                 return JsonConvert.SerializeObject(map);
             }
@@ -122,15 +122,27 @@ namespace Forum.Controllers
         [Authorize(Roles = "Administrator,User,Moderator")]
         public string Vote(string CommentId)
         {
-            var map = new Dictionary<string, string>();
+            try
+            {
+                int commId = Convert.ToInt32(CommentId);
 
-            int commId = Convert.ToInt32(CommentId);
+                var map = new Dictionary<string, string>();
+                map.Add("Voted", ChangeVote(commId) ? "1" : "0");
+                map.Add("VoteCount", GetVoteCount(commId));
 
-            map.Add("VoteText", ChangeVote(commId) ? "Unvote" : "Vote");
-            map.Add("VoteCount", GetVoteCount(commId));
+                Debug.WriteLine(JsonConvert.SerializeObject(map));
+                return JsonConvert.SerializeObject(map);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
 
-            Debug.WriteLine(JsonConvert.SerializeObject(map));
-            return JsonConvert.SerializeObject(map);
+                var map = new Dictionary<string, string>();
+                map.Add("Voted", "0");
+                map.Add("VoteCount", "0");
+
+                return JsonConvert.SerializeObject(map);
+            }
         }
 
         [WebMethod]
@@ -151,8 +163,8 @@ namespace Forum.Controllers
 
 
                 var map = new Dictionary<string, string>();
-                map.Add("VoteText", "Vote");
-                map.Add("VoteCount", GetVoteCount(commId));
+                map.Add("Voted", "0");
+                map.Add("VoteCount", "0");
 
                 Debug.WriteLine(JsonConvert.SerializeObject(map));
                 return JsonConvert.SerializeObject(map);
@@ -162,7 +174,7 @@ namespace Forum.Controllers
                 Debug.WriteLine($"Exception thrown in UpvoteCommentController.Clear()!: ${e}");
 
                 var map = new Dictionary<string, string>();
-                map.Add("VoteText", "Vote");
+                map.Add("Voted", "0");
                 map.Add("VoteCount", "0");
 
                 return JsonConvert.SerializeObject(map);

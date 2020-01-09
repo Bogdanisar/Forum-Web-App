@@ -5,17 +5,13 @@
 
 <h2> @ViewBag.Title </h2>
 
-@foreach (var subject in ViewBag.Subjects)
+@foreach (Forum.Models.Subject subject in ViewBag.Subjects)
 {
-    <div class="panel panel-default">
-        @Html.Partial("SubjectInfo", (Forum.Models.Subject)subject)
-        <p> Category: @subject.Category.CategoryName </p>
-        <a class="btn btn-success" href="/Subject/Show/@subject.SubjectId">Afisare subiect</a>
-    </div>
+    ViewData["subjectClickable"] = true;
+    @Html.Partial("SubjectPanelWithActions", subject)
+    ViewData["subjectClickable"] = null;
 
-    <br />
     <hr />
-    <br />
 }
 <br />
 <a class="btn btn-info" href="/Category/Index">All categories</a>

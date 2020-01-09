@@ -19,7 +19,6 @@ namespace Forum.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         
-        [Authorize(Roles = "User,Moderator,Administrator")]
         [ValidateInput(false)]
         public ActionResult Search(string word)
         {

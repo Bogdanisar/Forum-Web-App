@@ -1,0 +1,58 @@
+﻿@model Forum.Models.Subject
+
+<div class="panel panel-default form-and-dropdown-wrapper">
+    @Html.Partial("SubjectInfo", Model, ViewData)
+
+    @if (ViewBag.UserId == Model.UserId || User.IsInRole("Moderator") || User.IsInRole("Administrator"))
+    {
+        <div class="panel-footer article-panel-footer">
+
+            @if (ViewBag.UserId == Model.UserId)
+            {
+                <a class="btn btn-primary" href="/Subject/Edit/@Model.SubjectId">Edit subject</a>
+
+                <form action="/Subject/Delete" method="post">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+
+                    @Html.Hidden("id", Model.SubjectId)
+
+                    <button class="btn btn-danger" type="submit">Delete subject</button>
+                </form>
+            }
+
+
+            <div style="display: none">
+                @using (Html.BeginForm(actionName: "Delete", controllerName: "Subject", routeValues: new
+                {
+                    id = Model.SubjectId
+                }))
+                {
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                }
+            </div>
+
+            @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
+            {
+                <div class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Sudo
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="dropdown-header">Admin</li>
+                            <li><a href="/Subject/Edit/@Model.SubjectId">Edit subject</a></li>
+                            <li><a href="#" class="dropdown-delete">Delete subject</a></li>
+                            <li><a href="#" onclick='Clear(@Model.SubjectId)'>Clear votes</a></li>
+                            <li role="separator" class="divider"></li>
+                        }
+                        <li class="dropdown-header">Moderator</li>
+                        <li><a href="/Subject/EditCategory/@Model.SubjectId">Edit subject category</a></li>
+                    </ul>
+                </div>
+            }
+
+        </div>
+    }
+</div>

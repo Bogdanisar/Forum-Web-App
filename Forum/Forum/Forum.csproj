@@ -214,6 +214,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\CommentUpvote.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -275,15 +276,14 @@
     <Content Include="Views\Comment\Index.cshtml" />
     <Content Include="Views\Shared\CommentInfo.cshtml" />
     <Content Include="Views\Comment\New.cshtml" />
-    <Content Include="Views\Comment\Show.cshtml" />
     <Content Include="Views\Comment\Edit.cshtml" />
-    <Content Include="Views\Shared\CommentUpvoteScript.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Show.cshtml" />
     <Content Include="Views\Subject\EditCategory.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="Views\Shared\SubjectPanelWithActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

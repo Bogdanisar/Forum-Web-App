@@ -9,7 +9,10 @@
     @Html.Partial("CategoryInfo", Model)
 </div>
 
-<a class="btn btn-primary" href="/Category/CreateSubject/@Model.CategoryId">Add a new subject in this category</a>
+@if (Request.IsAuthenticated) 
+{
+    <a class="btn btn-primary" href="/Category/CreateSubject/@Model.CategoryId">Add a new subject in this category</a>
+}
 
 @*Form for selecting a sorting criteria*@
 <form method="get" action="/Category/Show/@Model.CategoryId" style="float: right">
@@ -24,12 +27,14 @@
 
     @foreach (Forum.Models.Subject subject in ViewBag.subjects)
     {
+        ViewData["subjectClickable"] = true;
+
         <hr />
-        <div onclick="window.location = '/Subject/Show/@subject.SubjectId'">
-            <div class="panel panel-default">
-                @Html.Partial("SubjectInfo", subject)
-            </div>
+        <div class="panel panel-default">
+            @Html.Partial("SubjectInfo", subject)
         </div>
+
+        ViewData["subjectClickable"] = null;
     }
 
 </div>

@@ -1,9 +1,28 @@
-﻿
-<div class="panel-heading article-heading">
+﻿@model Forum.Models.Subject
+
+<div class="panel-heading article-heading"
+     
+     @if (ViewData["subjectClickable"] != null)
+     {
+         <text>
+            onclick="window.location = '/Subject/Show/@Model.SubjectId'"
+         </text>
+     }
+
+     >
     <span class="font-roboto article-title">@Model.Title</span>
 </div>
 
-<div class="panel-body">
+<div class="panel-body"
+
+     @if (ViewData["subjectClickable"] != null)
+     {
+         <text>
+            onclick="window.location = '/Subject/Show/@Model.SubjectId'"
+         </text>
+     }
+
+     >
     <div class="article-content-wrapper">
         @Html.Raw(Model.Description)
     </div>
