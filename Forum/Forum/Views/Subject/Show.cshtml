@@ -1,6 +1,6 @@
 ﻿@model Forum.Models.Subject
 @{
-    ViewBag.Title = "Afisare subiect";
+    ViewBag.Title = "Subject information";
 }
 
 <h2> @ViewBag.Title </h2>
@@ -36,7 +36,7 @@
         ViewBag.CommentIncludeActions = true;
 
         <text>
-            @Html.Partial("CommentInfo", (Forum.Models.Comment)ViewBag.Comments[i]);
+            @Html.Partial("CommentInfo", (Forum.Models.Comment)ViewBag.Comments[i])
         </text>
     }
 

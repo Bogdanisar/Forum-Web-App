@@ -20,9 +20,8 @@
     <br />
     @Html.TextArea("Content", Model.Content, new { @class = "form-control summernote", @style = "display: none" })
     <br />
-    @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
 
     <br />
-    <button class="btn btn-success" type="submit">Modify comment</button>
+    <button class="btn btn-success" type="submit">Save changes</button>
 }
 
