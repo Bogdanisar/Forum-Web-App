@@ -92,7 +92,8 @@ namespace Forum.Controllers
 
             if (category == null)
             {
-                return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid category id" });
+                TempData["message"] = "That category doesn't exist!";
+                return RedirectToAction("Index", "Category");
             }
 
 
@@ -117,7 +118,8 @@ namespace Forum.Controllers
             }
             else
             {
-                return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid sorting criteria or order!" });
+                TempData["message"] = "Invalid sorting criteria or order!";
+                return RedirectToAction("Show", "Category", new { @id=id });
             }
 
 
@@ -141,7 +143,8 @@ namespace Forum.Controllers
 
             if (!(1 <= currentPage && currentPage <= lastPage))
             {
-                return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid page number!" });
+                TempData["message"] = "Invalid page number!";
+                return RedirectToAction("Show", "Category", new { @id = id });
             }
 
             int offset = (currentPage - 1) * SubjectsPerPage;
@@ -256,11 +259,8 @@ namespace Forum.Controllers
             {
                 Debug.WriteLine(e.Message);
 
-                return RedirectToAction(
-                    "ErrorWithMessage",
-                    "Error",
-                    new { message = "Failed to remove the category!" }
-                );
+                TempData["message"] = "Failed to remove the category :(";
+                return RedirectToAction("Index", "Category");
             }
         }
 

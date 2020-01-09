@@ -90,8 +90,8 @@ namespace Forum.Controllers
 
             if (subject == null)
             {
-                return RedirectToAction("ErrorWithMessage", "Error", new { message = "Invalid subject id" });
-                //return RedirectToAction("Error", "Error");
+                TempData["message"] = "That subject doesn't exist!";
+                return RedirectToAction("Index", "Category");
             }
             
             ViewBag.Comments = subject.Comments.ToList<Comment>();
@@ -133,11 +133,8 @@ namespace Forum.Controllers
 
             if ((User.IsInRole("User") || User.IsInRole("Moderator")) && subject.UserId != User.Identity.GetUserId())
             {
-                return RedirectToAction(
-                    "ErrorWithMessage", 
-                    "Error", 
-                    new { message = "You don't have permission to edit this subject!" }
-                );
+                TempData["message"] = "You don't have permission to edit this subject!";
+                return RedirectToAction("Show", "Subject", new { @id = id });
             }
 
             ViewBag.CategoryList = GetAllCategories();
@@ -152,11 +149,8 @@ namespace Forum.Controllers
             Subject subj = db.Subjects.Find(id);
             if ((User.IsInRole("User") || User.IsInRole("Moderator")) && subj.UserId != User.Identity.GetUserId())
             {
-                return RedirectToAction(
-                    "ErrorWithMessage", 
-                    "Error", 
-                    new { message = "You don't have permission to edit that subject!" }
-                );
+                TempData["message"] = "You don't have permission to edit this subject!";
+                return RedirectToAction("Show", "Subject", new { @id = id });
             }
 
             try
@@ -266,11 +260,8 @@ namespace Forum.Controllers
             Subject subject = db.Subjects.Find(id);
             if (User.IsInRole("User") && subject.UserId != User.Identity.GetUserId())
             {
-                return RedirectToAction(
-                    "ErrorWithMessage", 
-                    "Error", 
-                    new { message = "You don't have permission to delete that subject!" }
-                );
+                TempData["message"] = "You don't have permission to delete this subject!";
+                return RedirectToAction("Show", "Subject", new { @id = id });
             }
 
             if (this.DeleteSubject(this.db, id))
@@ -281,11 +272,8 @@ namespace Forum.Controllers
             }
             else
             {
-                return RedirectToAction(
-                    "ErrorWithMessage",
-                    "Error",
-                    new { message = "Failed to remove subject!" }
-                );
+                TempData["message"] = "Failed to delete this subject! :(";
+                return RedirectToAction("Show", "Subject", new { @id = id });
             }
 
         }

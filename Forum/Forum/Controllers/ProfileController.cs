@@ -82,6 +82,7 @@ namespace Forum.Controllers
                         db.SaveChanges();
                     }
 
+                    TempData["message"] = "Edit successful";
                     return RedirectToAction("Index", new { id = requestProfile.ProfileId } );
                 }
             }
