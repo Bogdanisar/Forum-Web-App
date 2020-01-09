@@ -5,60 +5,8 @@
 
 <h2> @ViewBag.Title </h2>
 
-<div class="panel panel-default form-and-dropdown-wrapper">
-    @Html.Partial("SubjectInfo", Model)
+@Html.Partial("SubjectPanelWithActions", Model)
 
-    @if (ViewBag.UserId == Model.UserId || User.IsInRole("Moderator") || User.IsInRole("Administrator")) { 
-        <div class="panel-footer article-panel-footer">
-
-            @if (ViewBag.UserId == Model.UserId)
-            {
-                <a class="btn btn-primary" href="/Subject/Edit/@Model.SubjectId">Edit subject</a>
-
-                <form action="/Subject/Delete" method="post">
-                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-
-                    @Html.Hidden("id", Model.SubjectId)
-
-                    <button class="btn btn-danger" type="submit">Delete subject</button>
-                </form>
-            }
-
-
-            <div style="display: none">
-                @using (Html.BeginForm(actionName: "Delete", controllerName: "Subject", routeValues: new
-                {
-                    id = Model.SubjectId
-                }))
-                {
-                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-                }
-            </div>
-
-            @if (User.IsInRole("Moderator") || User.IsInRole("Administrator")) {
-                <div class="dropdown">
-                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Sudo
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        @if (User.IsInRole("Administrator"))
-                        {
-                            <li class="dropdown-header">Admin</li>
-                            <li><a href="/Subject/Edit/@Model.SubjectId">Edit subject</a></li>
-                            <li><a href="#" class="dropdown-delete">Delete subject</a></li>
-                            <li><a href="#" onclick='Clear(@Model.SubjectId)'>Clear votes</a></li>
-                            <li role="separator" class="divider"></li>
-                        }
-                        <li class="dropdown-header">Moderator</li>
-                        <li><a href="/Subject/EditCategory/@Model.SubjectId">Edit subject category</a></li>
-                    </ul>
-                </div>
-            }
-
-        </div>
-    }
-</div>
 
 <hr />
 
@@ -86,16 +34,16 @@
 
         <text>
             <div id="@divId" class="commentDiv panel panel-default form-and-dropdown-wrapper" CommentId="@comment.CommentId" style="margin: 20px 0px;">
-                <div class = "comm_box panel-body" style="background-color: white">
+                <div class="comm_box panel-body" style="background-color: white">
                     <div class="left_coll">
-                        <i class="glyphicon glyphicon-user"></i> 
-                        <strong style="font-size: medium"> 
+                        <i class="glyphicon glyphicon-user"></i>
+                        <strong style="font-size: medium">
                             <a href="/Profile/Index/@comment.User.Id" style="color: black">
                                 @comment.User.UserName
                             </a>
                         </strong>
                         <br />
-                        
+
                         <p style="font-size: small">
                             @switch (comment.Date.Month)
                             {
@@ -115,7 +63,7 @@
                             }
                             @comment.Date.Day, @comment.Date.Year @comment.Date.ToString("HH:mm:ss")
                         </p>
-                        
+
                         <span CommentId="@comment.CommentId" class="comment-vote-container" style="color: blue; visibility: hidden;" onclick="VoteComment(this, @comment.CommentId)">
                             <span class="vote_count"></span>
                             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
@@ -131,7 +79,7 @@
                             {
                                 <a href="/Comment/Edit/@comment.CommentId" style="text-decoration: none;">
                                     <i class="glyphicon glyphicon-edit" style="color: green"></i>
-                                </a> 
+                                </a>
                                 <br />
                             }
                             @if (ViewBag.UserId == comment.UserId || User.IsInRole("Administrator") || User.IsInRole("Moderator"))
@@ -148,7 +96,7 @@
                     }
                 </div>
 
-                
+
                 <div style="display: none">
                     @using (Html.BeginForm(actionName: "Delete", controllerName: "Comment", routeValues: new
                     {

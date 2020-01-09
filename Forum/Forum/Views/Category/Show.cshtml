@@ -24,12 +24,14 @@
 
     @foreach (Forum.Models.Subject subject in ViewBag.subjects)
     {
+        ViewData["subjectClickable"] = true;
+
         <hr />
-        <div onclick="window.location = '/Subject/Show/@subject.SubjectId'">
-            <div class="panel panel-default">
-                @Html.Partial("SubjectInfo", subject)
-            </div>
+        <div class="panel panel-default">
+            @Html.Partial("SubjectInfo", subject)
         </div>
+
+        ViewData["subjectClickable"] = null;
     }
 
 </div>
