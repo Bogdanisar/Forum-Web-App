@@ -4,6 +4,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
+using System;
+using System.Diagnostics;
 
 [assembly: OwinStartupAttribute(typeof(Forum.Startup))]
 namespace Forum
@@ -29,6 +31,7 @@ namespace Forum
             }
         }
 
+        private ApplicationDbContext db = new ApplicationDbContext(); //Add user information (name + bd) to db table
         private void createAdminUserAndApplicationRoles()
         {
             UserInfo[] info =
@@ -55,7 +58,7 @@ namespace Forum
                     var role = new IdentityRole();
                     role.Name = info[i].role;
                     roleManager.Create(role);
-
+                    
                     // se adauga utilizatorul
                     var user = new ApplicationUser();
                     user.UserName = info[i].email;
@@ -65,6 +68,20 @@ namespace Forum
                     if (userCreated.Succeeded)
                     {
                         UserManager.AddToRole(user.Id, info[i].role);
+                    }
+
+                    try
+                    {
+                        Profile tmp = new Profile();
+                        tmp.ProfileId = user.Id;
+                        tmp.Name = info[i].role;
+                        tmp.Birthday = "April 09, 1998";
+                        tmp.City = "Suceava, Romania";
+                        db.Profiles.Add(tmp);
+                        db.SaveChanges();
+                    } catch(Exception e)
+                    {
+                        // User is already in DB
                     }
                 }
             }

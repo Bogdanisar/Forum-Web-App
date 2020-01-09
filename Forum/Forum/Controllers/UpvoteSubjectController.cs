@@ -21,6 +21,8 @@ namespace Forum.Controllers
         {
             var rows = db.SubjectUpvotes.Where(su => su.UserId == userId && su.SubjectId == subjectId).ToList();
 
+            Debug.WriteLine(userId);
+
             if (rows.Count() == 0)
             {
                 return "0";
@@ -40,6 +42,7 @@ namespace Forum.Controllers
         private string ChangeVote(int subjectId)
         {
             string userId = User.Identity.GetUserId();
+   
 
             var rows = from upvote in db.SubjectUpvotes
                        where upvote.UserId == userId

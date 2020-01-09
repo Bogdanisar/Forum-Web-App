@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Forum.Models;
+using System.Diagnostics;
 
 namespace Forum.Controllers
 {
@@ -142,6 +143,8 @@ namespace Forum.Controllers
             return View();
         }
 
+
+        private ApplicationDbContext db = new ApplicationDbContext(); //Add user info to db table
         //
         // POST: /Account/Register
         [HttpPost]
@@ -153,6 +156,7 @@ namespace Forum.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
 
                 if (result.Succeeded)
                 {
@@ -168,6 +172,19 @@ namespace Forum.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
+                    try
+                    {
+                        Profile tmp = new Profile();
+                        tmp.ProfileId = user.Id;
+                        tmp.Name = model.Name;
+                        tmp.Birthday = model.Birthday;
+                        tmp.City = model.City;
+                        db.Profiles.Add(tmp);
+                        db.SaveChanges();
+                    } catch(Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

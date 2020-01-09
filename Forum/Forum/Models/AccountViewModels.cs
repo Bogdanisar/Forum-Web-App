@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Forum.Models
@@ -64,6 +65,19 @@ namespace Forum.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [RegularExpression("[A-Z][a-zA-Z][^#&<>\"~;$^%{}?]{1,20}$", ErrorMessage = "Invalid name")]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Birthday")]
+        public string Birthday { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        public string City { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
