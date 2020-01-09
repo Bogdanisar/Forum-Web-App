@@ -12,10 +12,11 @@ namespace Forum.Models
         [Key]
         public int SubjectId { get; set; }
 
-        [Required(ErrorMessage = "The subject name is required")]
+        [Required(ErrorMessage = "The subject title is required")]
         public string Title { get; set; }
         
         [AllowHtml]
+        [Required(ErrorMessage = "The subject description is required")]
         public string Description { get; set; }
 
         [Required]

@@ -1,6 +1,6 @@
 ﻿@model Forum.Models.Category
 @{
-    ViewBag.Title = "Editare categorie";
+    ViewBag.Title = "Edit category";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -12,19 +12,17 @@
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
-    @Html.ValidationSummary(false, "Erori de validare", new { @class = "text-danger" })
+    @Html.ValidationSummary(false, "Validation errors", new { @class = "text-danger" })
 
     @Html.HiddenFor(m => m.CategoryId)
     
 
-    @Html.LabelFor(m => m.CategoryName)
+    @Html.LabelFor(m => m.CategoryName, "Category name")
     <br />
     @Html.EditorFor(m => m.CategoryName)
     <br />
-    @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
-    <br />
 
     <br />
-    <button class="btn btn-success" type="submit">Modifica categoria</button>
+    <button class="btn btn-success" type="submit">Save changes</button>
 }
 
