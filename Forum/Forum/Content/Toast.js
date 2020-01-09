@@ -1,6 +1,6 @@
 ﻿function displayToast(message) {
     let div = document.createElement("div");
-    div.innerText = message;
+    div.innerHTML = message;
     div.className = "snackbar";
     document.body.appendChild(div);
 

@@ -16,8 +16,7 @@ namespace Forum.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-
-        [Authorize(Roles = "User,Moderator,Administrator")]
+        
         public ActionResult Index(string id)
         {
             Debug.WriteLine("Id is: " + id);
@@ -49,6 +48,12 @@ namespace Forum.Controllers
         [Authorize(Roles = "User,Moderator,Administrator")]
         public ActionResult Edit(string id)
         {
+            if ( !(User.IsInRole("Administrator") || User.IsInRole("Moderator") || id == User.Identity.GetUserId()) )
+            {
+                TempData["message"] = "You can't edit that profile!";
+                return RedirectToAction("Index", "Category");
+            }
+
             Profile profile = db.Profiles.Find(id);
             return View(profile);
         }
@@ -57,6 +62,12 @@ namespace Forum.Controllers
         [HttpPut]
         public ActionResult Edit(string id, Profile requestProfile)
         {
+            if (!(User.IsInRole("Administrator") || User.IsInRole("Moderator") || id == User.Identity.GetUserId()))
+            {
+                TempData["message"] = "You can't edit that profile!";
+                return RedirectToAction("Index", "Category");
+            }
+
             try
             {
                 if (ModelState.IsValid)

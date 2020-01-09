@@ -17,7 +17,7 @@
         <i class="glyphicon glyphicon-gift"></i> @ViewBag.Profile.Birthday
     </p>
 
-    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || ViewBag.UserId == ViewBag.Profile.ProfileId)
+    @if (Request.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Moderator") || ViewBag.UserId == ViewBag.Profile.ProfileId))
     {
         <a class="btn btn-success" href="/Profile/Edit/@ViewBag.Profile.ProfileId">Edit Profile</a>
     }
